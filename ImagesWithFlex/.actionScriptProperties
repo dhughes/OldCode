@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionScriptProperties mainApplicationPath="main.mxml" version="3">
+<compiler additionalCompilerArguments="-services &quot;/Applications/JRun4/servers/cfusion/cfusion-ear/cfusion-war/WEB-INF/flex/services-config.xml&quot; -locale en_US" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderPath="www" sourceFolderPath="src" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+<compilerSourcePath/>
+<libraryPath defaultLinkType="1">
+<libraryPathEntry kind="4" path=""/>
+<libraryPathEntry kind="1" linkType="1" path="libs"/>
+<libraryPathEntry kind="3" linkType="1" path="/Users/scott/Flex/assets/flexunit/bin/flexunit.swc" useDefaultLinkType="false"/>
+</libraryPath>
+<sourceAttachmentPath/>
+</compiler>
+<applications>
+<application path="main.mxml"/>
+<application path="Simple_demo2.mxml"/>
+<application path="Simple_demo3.mxml"/>
+<application path="Simple_demo.mxml"/>
+<application path="captionDemo.mxml"/>
+<application path="chartDemo.mxml"/>
+<application path="VideoDemo.mxml"/>
+</applications>
+<modules/>
+<buildCSSFiles/>
+</actionScriptProperties>

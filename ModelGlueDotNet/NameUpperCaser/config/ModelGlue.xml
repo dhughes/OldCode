@@ -1,0 +1,56 @@
+<modelglue>
+  <config>
+    <setting name="defaultEvent" value="Home" />
+    <setting name="reload" value="true" />
+    <setting name="reloadKey" value="init" />
+    <setting name="reloadPassword" value="true" />
+    <setting name="statePrecedence" value="Form" />
+    <setting name="eventValue" value="event" />
+    <setting name="applicationMapping" value="/" />
+    <!-- <setting name="modelGlueMapping" value="/ModelGlue" /> -->
+    <setting name="beanMappings" value="/Config/Beans/" />
+    <setting name="viewMappings" value="/Views" />
+	<setting name="defaultExceptionHandler" value="Exception" />
+    <setting name="debug" value="true" />
+  </config>
+
+  <controllers>
+    <controller name="NameUpperCaserController" type="NameUpperCaser.Controller.Controller">
+      <message-listener message="OnRequestStart" function="OnRequestStart" />
+      <message-listener message="OnRequestEnd" function="OnRequestEnd" />
+      <message-listener message="DoHomepage" function="DoHomepage" />
+      <message-listener message="DoUpper" function="DoUpper" />
+    </controller>
+  </controllers>
+  
+  <event-handlers>
+    <!-- Pages -->
+    <event-handler name="Home">
+      <broadcasts>
+        <message name="DoHomepage">
+          <argument name="SampleArg" value="iAmASampleArgument" />
+        </message>
+      </broadcasts>
+      <views>
+        <include name="body" template="form_name.ascx" />
+        <include name="body" template="display_name.ascx" append="true" />
+        <include name="main" template="layout_main.ascx" />
+      </views>
+    </event-handler>
+
+	<event-handler name="UpperCaseTheName">
+      <broadcasts>
+        <message name="DoUpper" />
+      </broadcasts>
+      <results>
+      	<result do="Home" />
+      </results>
+	</event-handler>
+		
+    <event-handler name="Exception">
+    	<views>
+    		<include name="body" template="exception.ascx" />
+    	</views>
+    </event-handler>
+  </event-handlers>
+</modelglue>

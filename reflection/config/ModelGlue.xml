@@ -1,0 +1,80 @@
+<modelglue>
+	<config>
+		<setting name="defaultEvent" value="Home" />
+		<setting name="reload" value="true" />
+		<setting name="reloadKey" value="init" />
+		<setting name="reloadPassword" value="true" />
+		<setting name="statePrecedence" value="Form" />
+		<setting name="eventValue" value="event" />
+		<setting name="applicationMapping" value="/reflection" />
+		<setting name="modelGlueMapping" value="/ModelGlue" />
+		<setting name="beanMappings" value="/reflection/config/beans/" />
+		<setting name="viewMappings" value="/reflection/views" />
+		<setting name="defaultExceptionHandler" value="Exception" />
+		<setting name="debug" value="false" />
+	</config>
+	
+	<controllers>
+		<controller name="myController" type="reflection.controller.Controller">
+			<message-listener message="OnRequestStart" function="OnRequestStart" />
+			<message-listener message="OnRequestEnd" function="OnRequestEnd" />
+			<message-listener message="DoReflection" function="DoReflection" />
+		</controller>
+	</controllers>
+	
+	<event-handlers>
+    	<event-handler name="Home">
+			<broadcasts />
+			<views>
+				<include name="body" template="layout.classForm.cfm" />
+				<include name="main" template="layout.main.cfm" />
+			</views>
+			<results />
+		</event-handler>
+				
+    	<event-handler name="ReflectClass">
+			<broadcasts>
+				<message name="DoReflection" />
+			</broadcasts>
+			<views />
+			<results>
+				<result name="reflectionFailed" do="Home" />
+				<result name="reflectionSucceeded" do="showReflection" />
+				<result name="classNameIsPackageName" do="BrowsePackage" />
+			</results>
+		</event-handler>
+		
+    	<event-handler name="showReflection">
+			<broadcasts />
+			<views>
+				<include name="body" template="layout.classForm.cfm" />
+				<include name="body" template="layout.reflection.cfm" append="true" />
+				<include name="main" template="layout.main.cfm" />
+			</views>
+			<results />
+		</event-handler>
+		
+		<event-handler name="Exception">
+			<broadcasts />
+			<views>
+				<include name="body" template="exception.cfm" />
+			</views>
+			<results />
+		</event-handler>
+	</event-handlers>
+</modelglue>
+
+<!-- Event-Handler Template
+      <broadcasts>
+        <message name="DoSomething">
+          <argument name="SampleArg" value="iAmASampleArgument" />
+        </message>
+      </broadcasts>
+      <views>
+        <include name="body" template="page.cfm" append="false" />
+      </views>
+      <results>
+      	<result name="resultValue" do="EventHandlerName" />
+      	<result name="failure" do="Exception" />
+      </results>
+		 --> 

@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Untitled Document</title>
+<style>
+	table, td{
+		border-collapse: collapse;
+		border: 1px solid black;
+	}
+	
+</style>
+
+<script language="javascript">
+	function newRow(row){
+		var table = document.getElementById('fields');
+		
+		// if we're on the last row add another row
+		if(table.rows.length - 1 == row.rowIndex){
+			addRow(table);
+			
+			document.getElementById('name' + (row.rowIndex + 1)).focus();
+		}
+		
+	}
+	
+	function addRow(table){
+		var row = table.insertRow(-1);
+		row.align = "center";
+		
+		insertCell(row, '<input name="name' + row.rowIndex + '" type="text" id="name' + row.rowIndex + '" size="30" maxlength="200" onblur="updateCode();"/>');
+		insertCell(row, '<input name="access' + row.rowIndex + '" type="text" id="access' + row.rowIndex + '" size="30" maxlength="200" onblur="updateCode();"/>');
+		insertCell(row, '<textarea name="hint' + row.rowIndex + '" cols="50" wrap="virtual" id="hint' + row.rowIndex + '" onblur="updateCode();"></textarea>');
+		insertCell(row, '<input name="type' + row.rowIndex + '" type="text" id="type' + row.rowIndex + '" size="30" maxlength="200" onblur="updateCode(); newRow(this.parentNode.parentNode);" />');
+		insertCell(row, '[<a href="javascript://" onclick="if(confirm(\'Delete?\')){deleteRow(this.parentNode.parentNode)};" style="color: red; font-weight: bold;">Del</a>]');
+	}
+	
+	function deleteRow(row){
+		var table = document.getElementById('fields');
+		
+		table.deleteRow(row.rowIndex);
+		
+		if(table.rows.length == 1){
+			addRow(table);
+		}
+		
+		updateCode();
+	}
+	
+	function insertCell(row, html){
+		var cell = document.createElement("td");
+		cell.innerHTML = html;
+		row.appendChild(cell);
+		return cell;
+	}
+	
+	function getDefault(type){
+		if(type == "numeric" || type == "binary"){
+			return 0;
+		}else if(type == "date"){
+			return "now()";
+		}else if(type == "array"){
+			return "arrayNew(1)";
+		}else if(type == "struct"){
+			return "structNew()";
+		}else{
+			return '\"\"';
+		}
+	}
+	
+	function updateCode(){
+		var code = '';
+		code += '<cfcomponent name="' + trim(document.getElementById('name').value) + '" hint="' + trim(document.getElementById('hint').value) + '">\r\n';
+		
+		var rows = document.getElementById('fields').rows;
+		var output = false;
+		
+		// loop over all the rows and make the properties
+		code += '\r\n';
+		for(x = 1 ; x < rows.length ; x++){
+			var cells = rows[x].cells;
+			
+			if(trim(cells[0].childNodes[0].value).length){
+				output = true;
+				code += '	<cfset variables.' + trim(cells[0].childNodes[0].value) + ' = ' + getDefault(cells[3].childNodes[0].value) + ' />\r\n';
+			}
+		}		
+		if(output){
+			code += '\r\n';	
+		}
+				
+		// create getters/setters
+		for(x = 1 ; x < rows.length ; x++){
+			var cells = rows[x].cells;
+
+			if(trim(cells[0].childNodes[0].value).length){
+				code += '	<cffunction name="get' + title(trim(cells[0].childNodes[0].value)) + '" access="' + trim(cells[1].childNodes[0].value) + '" hint="Getter for ' + trim(cells[0].childNodes[0].value) + '" output="false" returnType="' + trim(cells[3].childNodes[0].value) + '">\r\n';
+				code += '		<cfreturn variables.' + trim(cells[0].childNodes[0].value) + ' />\r\n';
+				code += '	</cffunction>\r\n\r\n';
+				
+				code += '	<cffunction name="set' + title(trim(cells[0].childNodes[0].value)) + '" access="' + trim(cells[1].childNodes[0].value) + '" hint="Setter for ' + trim(cells[0].childNodes[0].value) + '" output="false" returnType="void">\r\n';
+				code += '		<cfargument name="' + trim(cells[0].childNodes[0].value) + '" hint="' + trim(cells[2].childNodes[0].value) + '" required="yes" type="' + trim(cells[3].childNodes[0].value) + '" />\r\n';
+				code += '		<cfset variables.' + trim(cells[0].childNodes[0].value) + ' = arguments.' + trim(cells[0].childNodes[0].value) + ' />\r\n';
+				code += '	</cffunction>\r\n\r\n';
+			}
+		}	
+		
+		
+		code += '</cfcomponent>';
+		
+		document.getElementById('code').value = code;
+	}
+
+	function title(str){
+		return str.substring(0, 1).toUpperCase() + str.substring(1, str.length);
+	}
+
+	function trim(str){
+		return str.replace(/^\s*|\s*$/g,"");
+	}
+
+</script>
+</head>
+
+<body onload="document.form1.reset();">
+<h1>Bean Generator</h1>
+<form id="form1" name="form1" method="post" action="">
+  <table width="100%" border="0" cellspacing="0" cellpadding="3">
+    <tr>
+      <th width="20" align="left" bgcolor="#CCCCCC" scope="col"><strong>Name:</strong></th>
+      <td scope="col"><input name="name" type="text" id="name" size="50" maxlength="200" onblur="updateCode();"  /></td>
+    </tr>
+    <tr>
+      <th width="20" align="left" bgcolor="#CCCCCC"><strong>Hint:</strong></th>
+      <td><textarea name="hint" cols="50" wrap="virtual" id="hint" onblur="updateCode();" ></textarea></td>
+    </tr>
+  </table>
+
+	<h2>Fields </h2>
+	<table width="100%" border="0" cellspacing="0" cellpadding="3" id="fields">
+	  <tr>
+		<th width="25%" bgcolor="#CCCCCC" scope="col">Name</th>
+		<th width="25%" bgcolor="#CCCCCC" scope="col">Access</th>
+		<th width="25%" bgcolor="#CCCCCC" scope="col">Hint</th>
+		<th width="25%" bgcolor="#CCCCCC" scope="col">Type</th>
+		<th width="25%" bgcolor="#CCCCCC" scope="col">&nbsp;</th>
+	  </tr>
+	  <tr>
+		<td width="25%" align="center"><input name="name1" type="text" id="name1" size="30" maxlength="200" onblur="updateCode();" /></td>
+		<td width="25%" align="center"><input name="access1" type="text" id="access1" size="30" maxlength="200" onblur="updateCode();"/></td>
+		<td width="25%" align="center"><textarea name="hint1" cols="50" wrap="virtual" id="hint1" onblur="updateCode();"></textarea></td>
+		<td width="25%" align="center"><input name="type1" type="text" id="type1" size="30" maxlength="200" onblur="updateCode(); newRow(this.parentNode.parentNode);"/></td>
+		<td width="25%" align="center">[<a href="javascript://" onclick="if(confirm('Delete?')){deleteRow(this.parentNode.parentNode)};" style="color: red; font-weight: bold;">Del</a>]</td>
+	  </tr>
+  </table>
+	
+	<h2>Code </h2>
+	<textarea name="code" wrap="virtual" id="code" style="width: 100%; height: 400px;" onfocus="this.select()" onclick="this.select()"></textarea>
+</form>
+</body>
+</html>

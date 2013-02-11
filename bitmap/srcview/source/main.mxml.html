@@ -1,0 +1,55 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>main.mxml</title>
+<link rel="stylesheet" type="text/css" href="../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="mxmlCdata">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="mxmlComponent">&lt;mx:Application</span> xmlns:mx=&quot;<span class="mxmlString">http://www.adobe.com/2006/mxml</span>&quot; layout=&quot;<span class="mxmlString">vertical</span>&quot;<span class="mxmlComponent">&gt;</span> 
+
+<span class="mxmlTag">&lt;mx:Script&gt;</span>
+    <span class="asOperator">&lt;!</span><span class="asBracket">[</span>CDATA<span class="asBracket">[</span>
+        <span class="asReserved">import</span> mx.rpc.events.ResultEvent;
+        <span class="asReserved">import</span> mx.core.UIComponent;
+        <span class="asReserved">import</span> com.adobe.images.JPGEncoder;
+        <span class="asReserved">import</span> mx.controls.Alert;
+        <span class="asReserved">import</span> flash.net.URLRequest;
+        
+        <span class="asReserved">private</span> <span class="asFunction">function</span> getBitmapData<span class="asBracket">(</span>target<span class="asOperator">:</span>UIComponent <span class="asBracket">)</span> <span class="asOperator">:</span> BitmapData
+        <span class="asBracket">{</span>
+            <span class="asVar">var</span> bitmapData<span class="asOperator">:</span>BitmapData <span class="asOperator">=</span> <span class="asReserved">new</span> BitmapData<span class="asBracket">(</span>target.width, target.height<span class="asBracket">)</span>;
+            <span class="asVar">var</span> matrix<span class="asOperator">:</span>Matrix <span class="asOperator">=</span> <span class="asReserved">new</span> Matrix<span class="asBracket">()</span>;
+            bitmapData.draw<span class="asBracket">(</span>target, matrix<span class="asBracket">)</span>;
+            <span class="asReserved">return</span> bitmapData;
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">private</span> <span class="asFunction">function</span> sendImage<span class="asBracket">(</span>target<span class="asOperator">:</span>UIComponent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span><span class="asBracket">{</span>
+
+            <span class="asVar">var</span> bitmapData<span class="asOperator">:</span>BitmapData <span class="asOperator">=</span> getBitmapData<span class="asBracket">(</span>target<span class="asBracket">)</span>;
+            <span class="asVar">var</span> jpgEncoder<span class="asOperator">:</span>JPGEncoder <span class="asOperator">=</span> <span class="asReserved">new</span> JPGEncoder<span class="asBracket">(</span>90<span class="asBracket">)</span>;
+            <span class="asVar">var</span> imgData<span class="asOperator">:</span>ByteArray <span class="asOperator">=</span> jpgEncoder.encode<span class="asBracket">(</span>bitmapData<span class="asBracket">)</span>;
+            imageService.saveImage<span class="asBracket">(</span>imgData<span class="asBracket">)</span>; 
+            
+        <span class="asBracket">}</span>
+        
+        <span class="asReserved">private</span> <span class="asFunction">function</span> onResult<span class="asBracket">(</span>event<span class="asOperator">:</span>ResultEvent<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span><span class="asBracket">{</span>
+            <span class="asVar">var</span> imgName<span class="asOperator">:</span>String <span class="asOperator">=</span> event.result <span class="asReserved">as</span> String;
+            <span class="asVar">var</span> url<span class="asOperator">:</span>URLRequest <span class="asOperator">=</span> <span class="asReserved">new</span> URLRequest<span class="asBracket">(</span><span class="asString">&quot;showImage.cfm?image=&quot;</span><span class="asOperator">+</span>imgName<span class="asBracket">)</span>;
+            navigateToURL<span class="asBracket">(</span>url,<span class="asString">&quot;_blank&quot;</span><span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+    <span class="asBracket">]]</span><span class="asOperator">&gt;</span>
+<span class="mxmlTag">&lt;/mx:Script&gt;</span>
+
+<span class="mxmlComponent">&lt;mx:RemoteObject</span> id=&quot;<span class="mxmlString">imageService</span>&quot; showBusyCursor=&quot;<span class="mxmlString">true</span>&quot; destination=&quot;<span class="mxmlString">ColdFusion</span>&quot; source=&quot;<span class="mxmlString">bitmap.bin.com.Image</span>&quot;<span class="mxmlComponent">&gt;</span>
+    <span class="mxmlComponent">&lt;mx:method</span> name=&quot;<span class="mxmlString">saveImage</span>&quot; result=&quot;onResult<span class="asBracket">(</span>event<span class="asBracket">)</span>&quot; <span class="mxmlComponent">/&gt;</span>
+<span class="mxmlComponent">&lt;/mx:RemoteObject&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Panel</span> layout=&quot;<span class="mxmlString">absolute</span>&quot; id=&quot;<span class="mxmlString">panel</span>&quot; title=&quot;<span class="mxmlString">My Title</span>&quot; width=&quot;<span class="mxmlString">400</span>&quot; height=&quot;<span class="mxmlString">400</span>&quot;<span class="mxmlComponent">&gt;</span>
+        <span class="mxmlComponent">&lt;mx:TextArea</span> left=&quot;<span class="mxmlString">5</span>&quot; top=&quot;<span class="mxmlString">5</span>&quot; bottom=&quot;<span class="mxmlString">5</span>&quot; right=&quot;<span class="mxmlString">5</span>&quot;<span class="mxmlComponent">/&gt;</span>
+    <span class="mxmlComponent">&lt;/mx:Panel&gt;</span>
+    <span class="mxmlComponent">&lt;mx:Button</span> label=&quot;<span class="mxmlString">Send Image</span>&quot; click=&quot;sendImage<span class="asBracket">(</span>panel<span class="asBracket">)</span>&quot; <span class="mxmlComponent">/&gt;</span>
+
+<span class="mxmlComponent">&lt;/mx:Application&gt;</span></pre></body>
+</html>

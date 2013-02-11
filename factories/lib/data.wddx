@@ -1,0 +1,23 @@
+<wddxPacket version="1.0">
+	<header />
+	<data>
+		<recordset rowCount="3" fieldNames="firstname,lastname,email"
+			type="coldfusion.sql.QueryTable">
+			<field name="firstname">
+				<string>Bob</string>
+				<string>Sue</string>
+				<string>Fred</string>
+			</field>
+			<field name="lastname">
+				<string>Jones</string>
+				<string>Smith</string>
+				<string>Johnson</string>
+			</field>
+			<field name="email">
+				<string>bob.jones@example.com</string>
+				<string>sue.smith@example.com</string>
+				<string>fred.johnson@example.com</string>
+			</field>
+		</recordset>
+	</data>
+</wddxPacket>

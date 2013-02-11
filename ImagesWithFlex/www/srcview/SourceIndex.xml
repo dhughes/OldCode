@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of Images With Flex</title>
+	<nodes>
+		<node label="src" icon="classpathIcon" expanded="true">
+			<node label="assets">
+				<node label="phone.flv" url="source/assets/phone.flv"/>
+			</node>
+			<node selected="true" label="VideoDemo.mxml" icon="mxmlAppIcon" url="source/VideoDemo.mxml.html"/>
+		</node>
+		<node label="www">
+			<node label="assets">
+				<node label="phone.flv" url="source/www/assets/phone.flv"/>
+			</node>
+			<node label="history">
+				<node label="history.css" icon="cssIcon" url="source/www/history/history.css.html"/>
+				<node label="history.js" url="source/www/history/history.js.txt"/>
+				<node label="historyFrame.html" icon="htmlIcon" url="source/www/history/historyFrame.html"/>
+			</node>
+			<node label="srcview">
+				<node label="source">
+					<node label="assets">
+						<node label="css">
+							<node label="Simple_demo2.css.html" icon="htmlIcon" url="source/www/srcview/source/assets/css/Simple_demo2.css.html"/>
+						</node>
+						<node label="phone.flv" url="source/www/srcview/source/assets/phone.flv"/>
+					</node>
+					<node label="flex">
+						<node label="jars">
+							<node label="asc.jar" url="source/www/srcview/source/flex/jars/asc.jar"/>
+							<node label="batik-awt-util.jar" url="source/www/srcview/source/flex/jars/batik-awt-util.jar"/>
+							<node label="batik-bridge.jar" url="source/www/srcview/source/flex/jars/batik-bridge.jar"/>
+							<node label="batik-css.jar" url="source/www/srcview/source/flex/jars/batik-css.jar"/>
+							<node label="batik-dom.jar" url="source/www/srcview/source/flex/jars/batik-dom.jar"/>
+							<node label="batik-ext.jar" url="source/www/srcview/source/flex/jars/batik-ext.jar"/>
+							<node label="batik-gvt.jar" url="source/www/srcview/source/flex/jars/batik-gvt.jar"/>
+							<node label="batik-parser.jar" url="source/www/srcview/source/flex/jars/batik-parser.jar"/>
+							<node label="batik-script.jar" url="source/www/srcview/source/flex/jars/batik-script.jar"/>
+							<node label="batik-svg-dom.jar" url="source/www/srcview/source/flex/jars/batik-svg-dom.jar"/>
+							<node label="batik-svggen.jar" url="source/www/srcview/source/flex/jars/batik-svggen.jar"/>
+							<node label="batik-transcoder.jar" url="source/www/srcview/source/flex/jars/batik-transcoder.jar"/>
+							<node label="batik-util.jar" url="source/www/srcview/source/flex/jars/batik-util.jar"/>
+							<node label="batik-xml.jar" url="source/www/srcview/source/flex/jars/batik-xml.jar"/>
+							<node label="cfdataservicesadapter.jar" url="source/www/srcview/source/flex/jars/cfdataservicesadapter.jar"/>
+							<node label="cfgatewayadapter.jar" url="source/www/srcview/source/flex/jars/cfgatewayadapter.jar"/>
+							<node label="concurrent.jar" url="source/www/srcview/source/flex/jars/concurrent.jar"/>
+							<node label="flex-acrobat.jar" url="source/www/srcview/source/flex/jars/flex-acrobat.jar"/>
+							<node label="flex-webtier-jsp.jar" url="source/www/srcview/source/flex/jars/flex-webtier-jsp.jar"/>
+							<node label="flex-webtier.jar" url="source/www/srcview/source/flex/jars/flex-webtier.jar"/>
+							<node label="license.jar" url="source/www/srcview/source/flex/jars/license.jar"/>
+							<node label="mm-velocity-1.4.jar" url="source/www/srcview/source/flex/jars/mm-velocity-1.4.jar"/>
+							<node label="mxmlc.jar" url="source/www/srcview/source/flex/jars/mxmlc.jar"/>
+							<node label="oscache.jar" url="source/www/srcview/source/flex/jars/oscache.jar"/>
+							<node label="swfkit.jar" url="source/www/srcview/source/flex/jars/swfkit.jar"/>
+							<node label="xercesImpl.jar" url="source/www/srcview/source/flex/jars/xercesImpl.jar"/>
+							<node label="xercesPatch.jar" url="source/www/srcview/source/flex/jars/xercesPatch.jar"/>
+							<node label="xmlParserAPIs.jar" url="source/www/srcview/source/flex/jars/xmlParserAPIs.jar"/>
+						</node>
+						<node label="libs">
+							<node label="automation.swc" url="source/www/srcview/source/flex/libs/automation.swc"/>
+							<node label="automation_charts.swc" url="source/www/srcview/source/flex/libs/automation_charts.swc"/>
+							<node label="charts.swc" url="source/www/srcview/source/flex/libs/charts.swc"/>
+							<node label="fds.swc" url="source/www/srcview/source/flex/libs/fds.swc"/>
+							<node label="flex.swc" url="source/www/srcview/source/flex/libs/flex.swc"/>
+							<node label="framework.swc" url="source/www/srcview/source/flex/libs/framework.swc"/>
+							<node label="playerglobal.swc" url="source/www/srcview/source/flex/libs/playerglobal.swc"/>
+							<node label="rpc.swc" url="source/www/srcview/source/flex/libs/rpc.swc"/>
+							<node label="utilities.swc" url="source/www/srcview/source/flex/libs/utilities.swc"/>
+						</node>
+						<node label="locale">
+							<node label="en_US">
+								<node label="adobe-remoting-provider_rb.swc" url="source/www/srcview/source/flex/locale/en_US/adobe-remoting-provider_rb.swc"/>
+								<node label="automation_rb.swc" url="source/www/srcview/source/flex/locale/en_US/automation_rb.swc"/>
+								<node label="charts_rb.swc" url="source/www/srcview/source/flex/locale/en_US/charts_rb.swc"/>
+								<node label="fds_rb.swc" url="source/www/srcview/source/flex/locale/en_US/fds_rb.swc"/>
+								<node label="framework_rb.swc" url="source/www/srcview/source/flex/locale/en_US/framework_rb.swc"/>
+								<node label="rpc_rb.swc" url="source/www/srcview/source/flex/locale/en_US/rpc_rb.swc"/>
+							</node>
+						</node>
+						<node label="user_classes">
+							<node label="add_your_as_and_swc_files_here" url="source/www/srcview/source/flex/user_classes/add_your_as_and_swc_files_here"/>
+						</node>
+						<node label="cache.dep" url="source/www/srcview/source/flex/cache.dep"/>
+						<node label="data-management-config.xml.txt" url="source/www/srcview/source/flex/data-management-config.xml.txt"/>
+						<node label="flash-unicode-table.xml.txt" url="source/www/srcview/source/flex/flash-unicode-table.xml.txt"/>
+						<node label="flex-config.xml.txt" url="source/www/srcview/source/flex/flex-config.xml.txt"/>
+						<node label="flex-sdk-description.xml.txt" url="source/www/srcview/source/flex/flex-sdk-description.xml.txt"/>
+						<node label="flex-webtier-config.xml.txt" url="source/www/srcview/source/flex/flex-webtier-config.xml.txt"/>
+						<node label="global.css.html" icon="htmlIcon" url="source/www/srcview/source/flex/global.css.html"/>
+						<node label="license.properties" url="source/www/srcview/source/flex/license.properties"/>
+						<node label="localFonts.ser" url="source/www/srcview/source/flex/localFonts.ser"/>
+						<node label="macFonts.ser" url="source/www/srcview/source/flex/macFonts.ser"/>
+						<node label="messaging-config.xml.txt" url="source/www/srcview/source/flex/messaging-config.xml.txt"/>
+						<node label="mxml-manifest.xml.txt" url="source/www/srcview/source/flex/mxml-manifest.xml.txt"/>
+						<node label="proxy-config.xml.txt" url="source/www/srcview/source/flex/proxy-config.xml.txt"/>
+						<node label="remoting-config.xml.txt" url="source/www/srcview/source/flex/remoting-config.xml.txt"/>
+						<node label="services-config.xml.txt" url="source/www/srcview/source/flex/services-config.xml.txt"/>
+						<node label="winFonts.ser" url="source/www/srcview/source/flex/winFonts.ser"/>
+					</node>
+					<node label="html-template">
+						<node label="history">
+							<node label="history.css.html" icon="htmlIcon" url="source/www/srcview/source/html-template/history/history.css.html"/>
+							<node label="history.js.txt" url="source/www/srcview/source/html-template/history/history.js.txt"/>
+							<node label="historyFrame.html" icon="htmlIcon" url="source/www/srcview/source/html-template/history/historyFrame.html"/>
+						</node>
+						<node label="AC_OETags.js.txt" url="source/www/srcview/source/html-template/AC_OETags.js.txt"/>
+						<node label="index.template.html" icon="htmlIcon" url="source/www/srcview/source/html-template/index.template.html"/>
+						<node label="playerProductInstall.swf" icon="swfIcon" url="source/www/srcview/source/html-template/playerProductInstall.swf"/>
+					</node>
+					<node label="libs">
+						<node label="corelib.swc" url="source/www/srcview/source/libs/corelib.swc"/>
+					</node>
+					<node label="www">
+						<node label="assets">
+							<node label="css">
+								<node label="Simple_demo2.css.html" icon="htmlIcon" url="source/www/srcview/source/www/assets/css/Simple_demo2.css.html"/>
+							</node>
+							<node label="phone.flv" url="source/www/srcview/source/www/assets/phone.flv"/>
+							<node label="tyry.jpg" icon="imageIcon" url="source/www/srcview/source/www/assets/tyry.jpg.html"/>
+							<node label="tyry.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/assets/tyry.jpg.html"/>
+							<node label="video0.flv" url="source/www/srcview/source/www/assets/video0.flv"/>
+						</node>
+						<node label="com">
+							<node label="DemoImageService.cfc.txt" url="source/www/srcview/source/www/com/DemoImageService.cfc.txt"/>
+						</node>
+						<node label="docs">
+							<node label="com">
+								<node label="adobe">
+									<node label="crypto">
+										<node label="class-list.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/crypto/class-list.html"/>
+										<node label="MD5.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/crypto/MD5.html"/>
+										<node label="package-detail.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/crypto/package-detail.html"/>
+										<node label="SHA1.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/crypto/SHA1.html"/>
+										<node label="SHA224.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/crypto/SHA224.html"/>
+										<node label="SHA256.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/crypto/SHA256.html"/>
+										<node label="WSSEUsernameToken.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/crypto/WSSEUsernameToken.html"/>
+									</node>
+									<node label="errors">
+										<node label="class-list.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/errors/class-list.html"/>
+										<node label="IllegalStateError.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/errors/IllegalStateError.html"/>
+										<node label="package-detail.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/errors/package-detail.html"/>
+									</node>
+									<node label="images">
+										<node label="BitString.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/images/BitString.html"/>
+										<node label="class-list.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/images/class-list.html"/>
+										<node label="JPGEncoder.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/images/JPGEncoder.html"/>
+										<node label="package-detail.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/images/package-detail.html"/>
+										<node label="PNGEncoder.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/images/PNGEncoder.html"/>
+									</node>
+									<node label="net">
+										<node label="proxies">
+											<node label="class-list.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/net/proxies/class-list.html"/>
+											<node label="package-detail.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/net/proxies/package-detail.html"/>
+											<node label="RFC2817Socket.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/net/proxies/RFC2817Socket.html"/>
+										</node>
+										<node label="class-list.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/net/class-list.html"/>
+										<node label="DynamicURLLoader.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/net/DynamicURLLoader.html"/>
+										<node label="IURIResolver.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/net/IURIResolver.html"/>
+										<node label="package-detail.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/net/package-detail.html"/>
+										<node label="URI.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/net/URI.html"/>
+										<node label="URIEncodingBitmap.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/net/URIEncodingBitmap.html"/>
+									</node>
+									<node label="serialization">
+										<node label="json">
+											<node label="class-list.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/serialization/json/class-list.html"/>
+											<node label="JSON.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/serialization/json/JSON.html"/>
+											<node label="JSONDecoder.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/serialization/json/JSONDecoder.html"/>
+											<node label="JSONEncoder.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/serialization/json/JSONEncoder.html"/>
+											<node label="JSONParseError.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/serialization/json/JSONParseError.html"/>
+											<node label="JSONToken.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/serialization/json/JSONToken.html"/>
+											<node label="JSONTokenizer.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/serialization/json/JSONTokenizer.html"/>
+											<node label="JSONTokenType.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/serialization/json/JSONTokenType.html"/>
+											<node label="package-detail.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/serialization/json/package-detail.html"/>
+										</node>
+									</node>
+									<node label="utils">
+										<node label="ArrayUtil.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/utils/ArrayUtil.html"/>
+										<node label="class-list.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/utils/class-list.html"/>
+										<node label="DateUtil.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/utils/DateUtil.html"/>
+										<node label="DictionaryUtil.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/utils/DictionaryUtil.html"/>
+										<node label="IntUtil.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/utils/IntUtil.html"/>
+										<node label="NumberFormatter.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/utils/NumberFormatter.html"/>
+										<node label="package-detail.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/utils/package-detail.html"/>
+										<node label="StringUtil.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/utils/StringUtil.html"/>
+										<node label="XMLUtil.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/utils/XMLUtil.html"/>
+									</node>
+									<node label="webapis">
+										<node label="events">
+											<node label="class-list.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/webapis/events/class-list.html"/>
+											<node label="package-detail.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/webapis/events/package-detail.html"/>
+											<node label="ServiceEvent.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/webapis/events/ServiceEvent.html"/>
+										</node>
+										<node label="class-list.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/webapis/class-list.html"/>
+										<node label="package-detail.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/webapis/package-detail.html"/>
+										<node label="ServiceBase.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/webapis/ServiceBase.html"/>
+										<node label="URLLoaderBase.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/com/adobe/webapis/URLLoaderBase.html"/>
+									</node>
+								</node>
+							</node>
+							<node label="images">
+								<node label="collapsed.gif" icon="imageIcon" url="source/www/srcview/source/www/docs/images/collapsed.gif.html"/>
+								<node label="collapsed.gif.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/images/collapsed.gif.html"/>
+								<node label="detailHeaderRule.jpg" icon="imageIcon" url="source/www/srcview/source/www/docs/images/detailHeaderRule.jpg.html"/>
+								<node label="detailHeaderRule.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/images/detailHeaderRule.jpg.html"/>
+								<node label="detailSectionHeader.jpg" icon="imageIcon" url="source/www/srcview/source/www/docs/images/detailSectionHeader.jpg.html"/>
+								<node label="detailSectionHeader.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/images/detailSectionHeader.jpg.html"/>
+								<node label="expanded.gif" icon="imageIcon" url="source/www/srcview/source/www/docs/images/expanded.gif.html"/>
+								<node label="expanded.gif.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/images/expanded.gif.html"/>
+								<node label="inherit-arrow.gif" icon="imageIcon" url="source/www/srcview/source/www/docs/images/inherit-arrow.gif.html"/>
+								<node label="inherit-arrow.gif.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/images/inherit-arrow.gif.html"/>
+								<node label="inheritedSummary.gif" icon="imageIcon" url="source/www/srcview/source/www/docs/images/inheritedSummary.gif.html"/>
+								<node label="inheritedSummary.gif.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/images/inheritedSummary.gif.html"/>
+								<node label="logo.jpg" icon="imageIcon" url="source/www/srcview/source/www/docs/images/logo.jpg.html"/>
+								<node label="logo.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/images/logo.jpg.html"/>
+								<node label="titleTableBottom.jpg" icon="imageIcon" url="source/www/srcview/source/www/docs/images/titleTableBottom.jpg.html"/>
+								<node label="titleTableBottom.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/images/titleTableBottom.jpg.html"/>
+								<node label="titleTableMiddle.jpg" icon="imageIcon" url="source/www/srcview/source/www/docs/images/titleTableMiddle.jpg.html"/>
+								<node label="titleTableMiddle.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/images/titleTableMiddle.jpg.html"/>
+								<node label="titleTableTop.jpg" icon="imageIcon" url="source/www/srcview/source/www/docs/images/titleTableTop.jpg.html"/>
+								<node label="titleTableTop.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/images/titleTableTop.jpg.html"/>
+							</node>
+							<node label="all-classes.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-classes.html"/>
+							<node label="all-index-A.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-A.html"/>
+							<node label="all-index-B.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-B.html"/>
+							<node label="all-index-C.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-C.html"/>
+							<node label="all-index-D.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-D.html"/>
+							<node label="all-index-E.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-E.html"/>
+							<node label="all-index-F.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-F.html"/>
+							<node label="all-index-G.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-G.html"/>
+							<node label="all-index-H.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-H.html"/>
+							<node label="all-index-I.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-I.html"/>
+							<node label="all-index-J.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-J.html"/>
+							<node label="all-index-K.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-K.html"/>
+							<node label="all-index-L.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-L.html"/>
+							<node label="all-index-M.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-M.html"/>
+							<node label="all-index-N.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-N.html"/>
+							<node label="all-index-O.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-O.html"/>
+							<node label="all-index-P.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-P.html"/>
+							<node label="all-index-Q.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-Q.html"/>
+							<node label="all-index-R.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-R.html"/>
+							<node label="all-index-S.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-S.html"/>
+							<node label="all-index-T.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-T.html"/>
+							<node label="all-index-U.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-U.html"/>
+							<node label="all-index-V.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-V.html"/>
+							<node label="all-index-W.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-W.html"/>
+							<node label="all-index-X.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-X.html"/>
+							<node label="all-index-Y.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-Y.html"/>
+							<node label="all-index-Z.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/all-index-Z.html"/>
+							<node label="appendixes.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/appendixes.html"/>
+							<node label="asdo.txt" url="source/www/srcview/source/www/docs/asdo.txt"/>
+							<node label="class-summary.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/class-summary.html"/>
+							<node label="cookie.txt" url="source/www/srcview/source/www/docs/cookie.txt"/>
+							<node label="index-list.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/index-list.html"/>
+							<node label="index.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/index.html"/>
+							<node label="mxml-tags.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/mxml-tags.html"/>
+							<node label="package-frame.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/package-frame.html"/>
+							<node label="package-list.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/package-list.html"/>
+							<node label="package-summary.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/package-summary.html"/>
+							<node label="print.css.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/print.css.html"/>
+							<node label="style.css.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/style.css.html"/>
+							<node label="title-bar.html" icon="htmlIcon" url="source/www/srcview/source/www/docs/title-bar.html"/>
+						</node>
+						<node label="history">
+							<node label="history.css.html" icon="htmlIcon" url="source/www/srcview/source/www/history/history.css.html"/>
+							<node label="history.js.txt" url="source/www/srcview/source/www/history/history.js.txt"/>
+							<node label="historyFrame.html" icon="htmlIcon" url="source/www/srcview/source/www/history/historyFrame.html"/>
+						</node>
+						<node label="images">
+							<node label="9CD385F3-C119-3DD5-47B798DF672A9288.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/9CD385F3-C119-3DD5-47B798DF672A9288.jpg.html"/>
+							<node label="9CD385F3-C119-3DD5-47B798DF672A9288.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/9CD385F3-C119-3DD5-47B798DF672A9288.jpg.html"/>
+							<node label="9CD62133-E12D-DA02-26172A4A826E6C68.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/9CD62133-E12D-DA02-26172A4A826E6C68.jpg.html"/>
+							<node label="9CD62133-E12D-DA02-26172A4A826E6C68.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/9CD62133-E12D-DA02-26172A4A826E6C68.jpg.html"/>
+							<node label="9CD92D76-E930-6EA5-CDBB79F3CF54F803.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/9CD92D76-E930-6EA5-CDBB79F3CF54F803.jpg.html"/>
+							<node label="9CD92D76-E930-6EA5-CDBB79F3CF54F803.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/9CD92D76-E930-6EA5-CDBB79F3CF54F803.jpg.html"/>
+							<node label="9CE3C3B7-DA50-B77D-47BB4E33FA61B041.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/9CE3C3B7-DA50-B77D-47BB4E33FA61B041.jpg.html"/>
+							<node label="9CE3C3B7-DA50-B77D-47BB4E33FA61B041.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/9CE3C3B7-DA50-B77D-47BB4E33FA61B041.jpg.html"/>
+							<node label="9CE9969E-90FA-540F-0EC4281DA070FBFB.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/9CE9969E-90FA-540F-0EC4281DA070FBFB.jpg.html"/>
+							<node label="9CE9969E-90FA-540F-0EC4281DA070FBFB.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/9CE9969E-90FA-540F-0EC4281DA070FBFB.jpg.html"/>
+							<node label="9CED1EAA-E49C-F33F-1F76FEEF4B6061C5.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/9CED1EAA-E49C-F33F-1F76FEEF4B6061C5.jpg.html"/>
+							<node label="9CED1EAA-E49C-F33F-1F76FEEF4B6061C5.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/9CED1EAA-E49C-F33F-1F76FEEF4B6061C5.jpg.html"/>
+							<node label="9CEDC75D-AC17-F5DD-0CC9E7B19AA7FEA9.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/9CEDC75D-AC17-F5DD-0CC9E7B19AA7FEA9.jpg.html"/>
+							<node label="9CEDC75D-AC17-F5DD-0CC9E7B19AA7FEA9.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/9CEDC75D-AC17-F5DD-0CC9E7B19AA7FEA9.jpg.html"/>
+							<node label="A0D9563A-9E06-1D7A-2D19E3D2B179A5B8.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0D9563A-9E06-1D7A-2D19E3D2B179A5B8.jpg.html"/>
+							<node label="A0D9563A-9E06-1D7A-2D19E3D2B179A5B8.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0D9563A-9E06-1D7A-2D19E3D2B179A5B8.jpg.html"/>
+							<node label="A0D95E6A-F480-3EC2-158A791B4D24813C.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0D95E6A-F480-3EC2-158A791B4D24813C.jpg.html"/>
+							<node label="A0D95E6A-F480-3EC2-158A791B4D24813C.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0D95E6A-F480-3EC2-158A791B4D24813C.jpg.html"/>
+							<node label="A0D96273-E237-51FC-62F24461CB21EA98.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0D96273-E237-51FC-62F24461CB21EA98.jpg.html"/>
+							<node label="A0D96273-E237-51FC-62F24461CB21EA98.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0D96273-E237-51FC-62F24461CB21EA98.jpg.html"/>
+							<node label="A0D96582-B44E-48E1-14AD3F46C1D1AB20.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0D96582-B44E-48E1-14AD3F46C1D1AB20.jpg.html"/>
+							<node label="A0D96582-B44E-48E1-14AD3F46C1D1AB20.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0D96582-B44E-48E1-14AD3F46C1D1AB20.jpg.html"/>
+							<node label="A0D9689B-EBF4-1DBB-C948035079901AC2.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0D9689B-EBF4-1DBB-C948035079901AC2.jpg.html"/>
+							<node label="A0D9689B-EBF4-1DBB-C948035079901AC2.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0D9689B-EBF4-1DBB-C948035079901AC2.jpg.html"/>
+							<node label="A0D96C82-9C18-D04E-A52B58E6F0122726.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0D96C82-9C18-D04E-A52B58E6F0122726.jpg.html"/>
+							<node label="A0D96C82-9C18-D04E-A52B58E6F0122726.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0D96C82-9C18-D04E-A52B58E6F0122726.jpg.html"/>
+							<node label="A0D97121-AF6B-EA83-7A92DC40A997866B.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0D97121-AF6B-EA83-7A92DC40A997866B.jpg.html"/>
+							<node label="A0D97121-AF6B-EA83-7A92DC40A997866B.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0D97121-AF6B-EA83-7A92DC40A997866B.jpg.html"/>
+							<node label="A0D984D8-EBA9-613C-0C2A5CE2101A784A.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0D984D8-EBA9-613C-0C2A5CE2101A784A.jpg.html"/>
+							<node label="A0D984D8-EBA9-613C-0C2A5CE2101A784A.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0D984D8-EBA9-613C-0C2A5CE2101A784A.jpg.html"/>
+							<node label="A0D9B61D-F8BD-1B60-E6547ED9E1E2F1EB.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0D9B61D-F8BD-1B60-E6547ED9E1E2F1EB.jpg.html"/>
+							<node label="A0D9B61D-F8BD-1B60-E6547ED9E1E2F1EB.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0D9B61D-F8BD-1B60-E6547ED9E1E2F1EB.jpg.html"/>
+							<node label="A0DC7889-A472-83D5-BE3B00AE0EF304CE.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0DC7889-A472-83D5-BE3B00AE0EF304CE.jpg.html"/>
+							<node label="A0DC7889-A472-83D5-BE3B00AE0EF304CE.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0DC7889-A472-83D5-BE3B00AE0EF304CE.jpg.html"/>
+							<node label="A0DC8E07-AD7A-250F-B2F107D8937C4E9A.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0DC8E07-AD7A-250F-B2F107D8937C4E9A.jpg.html"/>
+							<node label="A0DC8E07-AD7A-250F-B2F107D8937C4E9A.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0DC8E07-AD7A-250F-B2F107D8937C4E9A.jpg.html"/>
+							<node label="A0DC9BB0-BD83-CAF4-9F8A98850D78BC47.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0DC9BB0-BD83-CAF4-9F8A98850D78BC47.jpg.html"/>
+							<node label="A0DC9BB0-BD83-CAF4-9F8A98850D78BC47.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0DC9BB0-BD83-CAF4-9F8A98850D78BC47.jpg.html"/>
+							<node label="A0DCA3C8-C09A-92D0-373F331998A3E0CF.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0DCA3C8-C09A-92D0-373F331998A3E0CF.jpg.html"/>
+							<node label="A0DCA3C8-C09A-92D0-373F331998A3E0CF.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0DCA3C8-C09A-92D0-373F331998A3E0CF.jpg.html"/>
+							<node label="A0DCA8BE-E0A0-3547-B40576353FCEC487.jpg" icon="imageIcon" url="source/www/srcview/source/www/images/A0DCA8BE-E0A0-3547-B40576353FCEC487.jpg.html"/>
+							<node label="A0DCA8BE-E0A0-3547-B40576353FCEC487.jpg.html" icon="htmlIcon" url="source/www/srcview/source/www/images/A0DCA8BE-E0A0-3547-B40576353FCEC487.jpg.html"/>
+						</node>
+						<node label="srcview">
+							<node label="source">
+								<node label="assets">
+									<node label="css">
+									</node>
+								</node>
+							</node>
+						</node>
+					</node>
+					<node label="captionDemo.mxml.html" icon="htmlIcon" url="source/www/srcview/source/captionDemo.mxml.html"/>
+					<node label="chartDemo.mxml.html" icon="htmlIcon" url="source/www/srcview/source/chartDemo.mxml.html"/>
+					<node label="main.mxml.html" icon="htmlIcon" url="source/www/srcview/source/main.mxml.html"/>
+					<node label="Simple_demo.mxml.html" icon="htmlIcon" url="source/www/srcview/source/Simple_demo.mxml.html"/>
+					<node label="Simple_demo2.mxml.html" icon="htmlIcon" url="source/www/srcview/source/Simple_demo2.mxml.html"/>
+					<node label="Simple_demo3.mxml.html" icon="htmlIcon" url="source/www/srcview/source/Simple_demo3.mxml.html"/>
+					<node label="VideoDemo.mxml.html" icon="htmlIcon" url="source/www/srcview/source/VideoDemo.mxml.html"/>
+				</node>
+				<node label="AC_OETags.js" url="source/www/srcview/AC_OETags.js.txt"/>
+				<node label="downloadIcon.png" icon="imageIcon" url="source/www/srcview/downloadIcon.png.html"/>
+				<node label="Images With Flex.zip" url="source/www/srcview/Images With Flex.zip"/>
+				<node label="index.html" icon="htmlIcon" url="source/www/srcview/index.html"/>
+				<node label="playerProductInstall.swf" icon="swfIcon" url="source/www/srcview/playerProductInstall.swf"/>
+				<node label="SourceIndex.xml" url="source/www/srcview/SourceIndex.xml.txt"/>
+				<node label="SourceStyles.css" icon="cssIcon" url="source/www/srcview/SourceStyles.css.html"/>
+				<node label="SourceTree.html" icon="htmlIcon" url="source/www/srcview/SourceTree.html"/>
+				<node label="SourceTree.swf" icon="swfIcon" url="source/www/srcview/SourceTree.swf"/>
+			</node>
+			<node label="AC_OETags.js" url="source/www/AC_OETags.js.txt"/>
+			<node label="playerProductInstall.swf" icon="swfIcon" url="source/www/playerProductInstall.swf"/>
+			<node label="VideoDemo.html" icon="htmlIcon" url="source/www/VideoDemo.html"/>
+			<node label="VideoDemo.swf" icon="swfIcon" url="source/www/VideoDemo.swf"/>
+		</node>
+	</nodes>
+</index>

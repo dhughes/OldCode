@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Untitled Document</title>
+</head>
+
+<body>
+<p>Hello Doug, </p>
+<p>Based on  our conversation earlier today, I am closing your case at this time. It was  truly a pleasure to work on this challenging issue with you.&nbsp;As mentioned  over the phone, I would be going ahead and processing a refund for you for this  case.</p>
+<p>It is very  important&nbsp;for us&nbsp;that you to be able to rate our service as  excellent. If at any time, you are not&nbsp;happy with the service that  you&nbsp;have received on this&nbsp;case, you can provide feedback directly to  me or my manager at the contacts listed at the bottom.<br />
+    <br />
+  Here is a summary of the key points of the case for your records.<br />
+  <br />
+  Problem <br />
+  ===================<br />
+  Intermittently  the server does not serve up static content. Images (JPGs and GIFs) appear as a  Red X.</p>
+<p>Troubleshooting  Summary<br />
+  ===================</p>
+<ol>
+  <li>At  first it appeared that we are running into a hang issue. However, on  determining that we are able to get to simple pages from different clients, we  were able to confirm that the IIS process are in fact responsive and hence this  is not a hang.</li>
+  <li>Removed  the unnecessary websites from the IIS metabase using the IIS Admin tool &ndash; since  IIS 5.1 supports only 1 website running at a time.</li>
+  <li>Found  HTTP 403 error being logged in the IIS logs.</li>
+  <li>This  appeared to be occurring due to the fact that the maximum number of client  connections has reached (i.e. 10 connections) and hence IIS cannot accept any  more connections.</li>
+  <li>Took  a perfmon log and noticed that for each request, the connections attempts per  second goes up by 14 (1 for the html page, and 13 for the 13 images on the  page).</li>
+  <li>During  a failure, the number of connections attempts per second would be fewer.</li>
+  <li>Turned  on HTTP Keep-Alives, and now a connection is re-used to serve requests to one  client, thus resolving the HTTP 403 issue.</li>
+  <li>Now  we noticed HTTP 500 errors on JPG, GIF and other static content.</li>
+  <li>Removed  the JRUN ISAPI filter and uninstalled Cold Fusion. Problem persists.</li>
+  <li>An  HTTP 500 is indicative of failure on the server when it is trying to execute  some script (such as ASP, VB Script) on the server side.</li>
+  <li>Ensured  that no ISAPI extensions are configured for JRUN.</li>
+  <li>Ensured  that no ISAPI extensions are configured for JPG/GIF extensions.</li>
+  <li>Ensured  that ASP Server side debugging is disabled.</li>
+  <li>Turned  off Allow IIS to control the password.</li>
+  <li>Installed  the IISMon filter, which seemed to resolve the issue. Could be due to the fact  that IISMon does extra processing, thus reducing the speed with which requests  are processed by IIS.</li>
+  <li>Removed  all standard ISAPI filters and restarted IIS. Problem persists.</li>
+  <li>Uninstalled  IIS and re-installed. Problem persists.</li>
+  <li>Stopped  all 3rd party services and processes.</li>
+  <li>Ran  TCPView from sysinternals.com, which showed that only 4 connections were open  on the server using port 80.</li>
+  <li>Created  a simple html page with a bunch of images and stored this under the default  website. This fails intermittently as well.</li>
+  <li>Verified  that the content is not being picked up from a UNC share &ndash; to ensure that this  error could not be occurring due to failure during network access.</li>
+  <li>Verified  that content expiration is not enabled.</li>
+  <li>Enabled  extended logging in IIS and noticed that HTTP 500 is logged in the IIS logs,  with Win32 status of 6 i.e. ERROR_INVALID_HANDLE.</li>
+  <li>Gathered  a set of netmon traces when reproducing the issue and this confirmed that  &ldquo;Handle is Invalid error&rdquo;.</li>
+  <li>Noticed  that for each request to the web server (html or jpg / any other static  content), a corresponding file is created in the C:\ folder.</li>
+  <li>Verified  that this is not natural behavior in IIS 5.1 &ndash; by confirming the same on my  machine.</li>
+  <li>Gathered  a set of hang dumps of the inetinfo process, and this showed a 3rd  party component from ByteMobile installed i.e. bmnet.dll. Removed the PCS  Sprint Connection Manager to which this component belonged, and restarted IIS.</li>
+  <li>This  resolved the issue.</li>
+</ol>
+<p>Cause<br />
+  ===================<br />
+  We found a  component of the ByteMobile software that was being loaded in the inetinfo  process and causing this failure.&nbsp;This component appeared to be caching  each response to the disk before sending it to the client. This was causing the  server to run into the HTTP 500 error with Win32 status code 6 (Invalid Handle)  thus resulting in a red X being displayed for the failing image.<br />
+  <br />
+  Resolution <br />
+  ===================<br />
+  Uninstalled  the Sprint PCS Connection Manager and this resolved the issue.&nbsp;</p>
+<p>Please let  me know in case you have any follow up questions regarding the documentation  above.</p>
+<p>I hope that  you were delighted with the service provided to you. It was truly a pleasure  working with you and I&rsquo;m glad we were able to persist with the troubleshooting  and resolve the issue. As an added benefit, in case you have not already  reviewed them, I&rsquo;d like to offer you some Knowledge Base articles that have  proved very helpful in general. Let me know if you have any follow up  questions.</p>
+<p><strong>How to debug ISAPI DLLs in IIS 4.0,  IIS 5.0, IIS 5.1, and IIS 6.0</strong><br />
+  <a href="http://support.microsoft.com/kb/183480" title="blocked::http://support.microsoft.com/kb/183480">http://support.microsoft.com/kb/183480</a></p>
+<p><strong>HOW TO: Use Wfetch.exe to  Troubleshoot HTTP Connections</strong><br />
+  <a href="http://support.microsoft.com/default.aspx?scid=kb;%5bLN%5d;Q284285" title="blocked::http://support.microsoft.com/default.aspx?scid=kb;[LN];Q284285">http://support.microsoft.com/default.aspx?scid=kb;%5bLN%5d;Q284285</a></p>
+<p><strong>IIS Insider</strong><br />
+  <a href="http://www.microsoft.com/technet/community/columns/insider/iisiarch.mspx" title="blocked::http://www.microsoft.com/technet/community/columns/insider/iisiarch.mspx">http://www.microsoft.com/technet/community/columns/insider/iisiarch.mspx</a></p>
+<p><strong>How to use the Debug Diagnostics 1.0  tool to analyze a memory dump file</strong><br />
+  <a href="http://support.microsoft.com/kb/921464" title="blocked::http://support.microsoft.com/kb/921464">http://support.microsoft.com/kb/921464</a></p>
+<p><strong>Tools and Utilities to use for  Troubleshooting </strong><br />
+  <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/bts06coredocs/html/c817384f-e328-439d-9c41-a94ed75670ce.asp" title="blocked::http://msdn.microsoft.com/library/default.asp?url=/library/en-us/bts06coredocs/html/c817384f-e328-439d-9c41-a94ed75670ce.asp">http://msdn.microsoft.com/library/default.asp?url=/library/en-us/bts06coredocs/html/c817384f-e328-439d-9c41-a94ed75670ce.asp</a></p>
+<p><strong>IIS Diagnostics Toolkit (x86)</strong><br />
+  <a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=9bfa49bc-376b-4a54-95aa-73c9156706e7&amp;DisplayLang=en" title="blocked::http://www.microsoft.com/downloads/details.aspx?FamilyID=9bfa49bc-376b-4a54-95aa-73c9156706e7&amp;DisplayLang=en">http://www.microsoft.com/downloads/details.aspx?FamilyID=9bfa49bc-376b-4a54-95aa-73c9156706e7&amp;DisplayLang=en</a></p>
+<p><strong>Internet Information Services 5.1</strong><br />
+  <a href="http://www.microsoft.com/windowsxp/evaluation/features/iis.mspx" title="blocked::http://www.microsoft.com/windowsxp/evaluation/features/iis.mspx">http://www.microsoft.com/windowsxp/evaluation/features/iis.mspx</a></p>
+<p><strong>Securing Internet Information  Services 5.0 and 5.1</strong><br />
+  <a href="http://www.microsoft.com/smallbusiness/support/articles/sec_iis_5_0_5_1.mspx" title="blocked::http://www.microsoft.com/smallbusiness/support/articles/sec_iis_5_0_5_1.mspx">http://www.microsoft.com/smallbusiness/support/articles/sec_iis_5_0_5_1.mspx</a></p>
+<p><strong>A Look at IIS 5.1 in Windows XP  Professional</strong><br />
+  <a href="http://www.microsoft.com/technet/community/en-us/windowsserver/articles/art_iis5inxp.mspx" title="blocked::http://www.microsoft.com/technet/community/en-us/windowsserver/articles/art_iis5inxp.mspx">http://www.microsoft.com/technet/community/en-us/windowsserver/articles/art_iis5inxp.mspx</a></p>
+<p>Thank&nbsp;you and have a wonderful day! <br />
+  Best Regards, </p>
+<p><strong>Rohan Makhija</strong><br />
+  IIS / ASP.NET&nbsp;Support Engineer</p>
+</body>
+</html>

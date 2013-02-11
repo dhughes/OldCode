@@ -1,0 +1,508 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="1.312" Name="ModelGlue.Net">
+ <ProjectOptions>
+  <SharedProject>False</SharedProject>
+  <Stylesheet Apply="False">d:\program files\microsoft fxcop 1.312\Xml\FxCopReport.Xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded" NewOnly="False" />
+   <Report Status="Active" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <PermitAnalysis>True</PermitAnalysis>
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>100</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>10</RuleExceptionsThreshold>
+  <Spelling Locale="en-us" />
+  <VersionAware>False</VersionAware>
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+ </ProjectOptions>
+ <Targets>
+  <Target Name="C:\Inetpub\wwwroot\ModelGlue\bin\ModelGlue.dll" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="True" />
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="1.312">
+  <Namespaces>
+   <Namespace Name="ModelGlue">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Created="2005-04-04 18:36:02Z">
+      <Issue>
+       <Item>ModelGlue</Item>
+      </Issue>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="ModelGlue.Bean">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Created="2005-04-04 18:36:02Z">
+      <Issue>
+       <Item>ModelGlue.Bean</Item>
+      </Issue>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="ModelGlue.Metadata">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Created="2005-04-04 18:36:02Z">
+      <Issue>
+       <Item>ModelGlue.Metadata</Item>
+      </Issue>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="ModelGlue.Util">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Created="2005-04-04 18:36:02Z">
+      <Issue>
+       <Item>ModelGlue.Util</Item>
+      </Issue>
+     </Message>
+     <Message Id="Util" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Created="2005-04-04 18:36:02Z">
+      <Issue Name="Namespace">
+       <Item>Util</Item>
+       <Item>ModelGlue.Util</Item>
+      </Issue>
+     </Message>
+    </Messages>
+   </Namespace>
+  </Namespaces>
+  <Targets>
+   <Target Name="C:\Inetpub\wwwroot\ModelGlue\bin\ModelGlue.dll">
+    <Modules>
+     <Module Name="modelglue.dll">
+      <Messages>
+       <Message TypeName="AssembliesShouldDeclareMinimumSecurity" Category="Microsoft.Usage" CheckId="CA2209" Created="2005-04-04 18:36:02Z">
+        <Issue>
+         <Item>ModelGlue</Item>
+        </Issue>
+       </Message>
+       <Message TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210" Created="2005-04-04 18:36:02Z">
+        <Issue Name="NoStrongName">
+         <Item>ModelGlue</Item>
+        </Issue>
+       </Message>
+       <Message TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014" Created="2005-04-04 18:36:02Z">
+        <Issue Name="NoAttr">
+         <Item>ModelGlue</Item>
+        </Issue>
+       </Message>
+       <Message TypeName="MarkAssembliesWithComVisible" Category="Microsoft.Design" CheckId="CA1017" Created="2005-04-04 18:36:02Z">
+        <Issue Name="NoAttribute" Level="CriticalError">
+         <Item>ModelGlue</Item>
+        </Issue>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="ModelGlue">
+        <Types>
+         <Type Name="Global">
+          <Messages>
+           <Message TypeName="ComVisibleTypeBaseTypesShouldBeComVisible" Category="Microsoft.Interoperability" CheckId="CA1405" Created="2005-04-04 18:36:02Z">
+            <Issue>
+             <Item>ModelGlue.Global</Item>
+             <Item> System.Web.HttpApplication</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name=".ctor()">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2005-04-04 18:36:02Z">
+              <Issue>
+               <Item>Global..ctor()</Item>
+               <Item>components</Item>
+               <Item>reference type</Item>
+               <Item>null</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ModelGlue">
+          <Messages>
+           <Message TypeName="TypeNamesShouldNotMatchNamespaces" Category="Microsoft.Naming" CheckId="CA1724" Created="2005-04-04 18:36:02Z">
+            <Issue>
+             <Item>ModelGlue</Item>
+             <Item>ModelGlue.Util</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name=".ctor(System.String)">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2005-04-04 18:36:02Z">
+              <Issue>
+               <Item>ModelGlue..ctor(String)</Item>
+               <Item>_beanFactory</Item>
+               <Item>reference type</Item>
+               <Item>null</Item>
+              </Issue>
+             </Message>
+             <Message Id="ModelGlue.ModelGlue.AddStaticMessage(System.String)" TypeName="DoNotPassLiteralsAsLocalizedParameters" Category="Microsoft.Globalization" CheckId="CA1303" Created="2005-04-04 18:36:02Z">
+              <Issue>
+               <Item>ModelGlue..ctor(String)</Item>
+               <Item>1</Item>
+               <Item>ModelGlue.AddStaticMessage(String):Void</Item>
+               <Item>OnQueueComplete</Item>
+              </Issue>
+              <Issue>
+               <Item>ModelGlue..ctor(String)</Item>
+               <Item>1</Item>
+               <Item>ModelGlue.AddStaticMessage(String):Void</Item>
+               <Item>OnRequestEnd</Item>
+              </Issue>
+              <Issue>
+               <Item>ModelGlue..ctor(String)</Item>
+               <Item>1</Item>
+               <Item>ModelGlue.AddStaticMessage(String):Void</Item>
+               <Item>OnRequestStart</Item>
+              </Issue>
+             </Message>
+             <Message Id="test" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2005-04-04 18:36:02Z">
+              <Issue>
+               <Item>ModelGlue..ctor(String)</Item>
+               <Item>test</Item>
+               <Item>ModelGlue.Util.GenericCollection</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="AddStaticMessage(System.String):System.Void">
+            <Messages>
+             <Message Id="message" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Created="2005-04-04 18:36:02Z" FixCategory="Breaking">
+              <Issue>
+               <Item>message</Item>
+               <Item>ModelGlue.AddStaticMessage(String):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="controllers">
+            <Messages>
+             <Message TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2005-04-04 18:36:02Z">
+              <Issue Name="Member">
+               <Item>controllers</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="eventHandlers">
+            <Messages>
+             <Message TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2005-04-04 18:36:02Z">
+              <Issue Name="Member">
+               <Item>eventHandlers</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="listeners">
+            <Messages>
+             <Message TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2005-04-04 18:36:02Z">
+              <Issue Name="Member">
+               <Item>listeners</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="LoadConfig(System.String):System.Void">
+            <Messages>
+             <Message Id="path" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Created="2005-04-04 18:36:02Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>path</Item>
+               <Item>ModelGlue.LoadConfig(String):Void</Item>
+              </Issue>
+             </Message>
+             <Message Id="this" TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801" Created="2005-04-04 18:36:02Z" FixCategory="NonBreaking">
+              <Issue Name="MarkAsStatic">
+               <Item>ModelGlue.LoadConfig(String):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="WebForm1">
+          <Messages>
+           <Message TypeName="ComVisibleTypeBaseTypesShouldBeComVisible" Category="Microsoft.Interoperability" CheckId="CA1405" Created="2005-04-04 18:36:02Z">
+            <Issue>
+             <Item>ModelGlue.WebForm1</Item>
+             <Item> System.Web.UI.Page, System.Web.UI.TemplateControl, System.Web.UI.Control</Item>
+            </Issue>
+           </Message>
+          </Messages>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="ModelGlue.Metadata">
+        <Types>
+         <Type Name="Message">
+          <Members>
+           <Member Name=".ctor(System.String)">
+            <Messages>
+             <Message TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805" Created="2005-04-04 18:36:02Z">
+              <Issue>
+               <Item>Message..ctor(String)</Item>
+               <Item>_name</Item>
+               <Item>reference type</Item>
+               <Item>null</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="addArgument(System.String,System.String):System.Void">
+            <Messages>
+             <Message TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2005-04-04 18:36:02Z">
+              <Issue Name="Member">
+               <Item>addArgument</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="arguments">
+            <Messages>
+             <Message TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2005-04-04 18:36:02Z">
+              <Issue Name="Member">
+               <Item>arguments</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="name">
+            <Messages>
+             <Message TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2005-04-04 18:36:02Z">
+              <Issue Name="Member">
+               <Item>name</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="ModelGlue.Util">
+        <Types>
+         <Type Name="GenericCollection">
+          <Messages>
+           <Message TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711" Created="2005-04-04 18:36:02Z">
+            <Issue>
+             <Item>ModelGlue.Util.GenericCollection</Item>
+             <Item>Collection</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="GetAll():System.Collections.Hashtable">
+            <Messages>
+             <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Created="2005-04-04 18:36:02Z">
+              <Issue Certainty="50">
+               <Item>GetAll</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="members">
+            <Accessors>
+             <Accessor Name="set_members(System.Collections.Hashtable):System.Void">
+              <Messages>
+               <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Created="2005-04-04 18:36:02Z">
+                <Issue>
+                 <Item>GenericCollection.set_members(Hashtable):Void</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Rules>
+   <Rule TypeName="AssembliesShouldDeclareMinimumSecurity" Category="Microsoft.Usage" CheckId="CA2209">
+    <Name>Assemblies should declare minimum security</Name>
+    <Description>Permission requests prevent security exceptions from being thrown after code in an assembly has already begun executing. With permission requests, the assembly does not load if it has insufficient permissions. This rule will fire if you have specified a permission request incorrectly, or incompletely. If you have specified requests but FxCop reports a violation for this rule, use the PermView.exe tool to view the security permissions in the assembly. An unenforceable permission appears as an empty permission set. Whidbey customers can use PermCalc.exe which gives even more detailed information. You should add attributes specifying what permissions your assembly will demand, might demand, and what permissions it does not want granted.  For example, the following attribute indicates that an assembly will, at minimum, require read access to the USERNAME environment variable: [assembly:EnvironmentPermissionAttribute(SecurityAction.RequestMinimum,
+Read="USERNAME")]. To specify permissions that the assembly might demand, use SecurityAction.RequestOptional. To specify permissions that the assembly must not be granted, use SecurityAction.RequestRefuse.</Description>
+    <Resolution Name="Default">No valid permission requests were found for assembly '{0}'. You should always specify the minimum security permissions using SecurityAction.RequestMinimum. If assembly permission requests have been specified, they are not enforceable; use the PermView.exe tool to view the assembly's permissions. Whidbey customers can use PermCalc.exe which gives even more detailed information.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Usage/AssembliesShouldDeclareMinimumSecurity.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="99">CriticalError</MessageLevel>
+    <File Name="UsageRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="AssembliesShouldHaveValidStrongNames" Category="Microsoft.Design" CheckId="CA2210">
+    <Name>Assemblies should have valid strong names</Name>
+    <Description>Either the assembly has no strong name, an invalid one, or the strong name is valid only because of the computer configuration. The assembly should not be deployed in this state. The most common causes of this are: 1) The assembly's contents were modified after it was signed. 2) The signing process failed. 3) The assembly was delay-signed. 4) A registry key existed that allowed the check to pass (where it would not have otherwise).</Description>
+    <Resolution Name="NoStrongName">Sign '{0}' with a strong name key.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Design/AssembliesShouldHaveValidStrongNames.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="95">CriticalError</MessageLevel>
+    <File Name="DesignRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
+    <Name>Avoid namespaces with few types</Name>
+    <Description>A namespace should generally have more than five types.</Description>
+    <Resolution Name="Default">Consider merging the types defined in  '{0}' with another namespace.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Design/AvoidNamespacesWithFewTypes.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="50">Warning</MessageLevel>
+    <File Name="DesignRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
+    <Name>Avoid uncalled private code</Name>
+    <Description>There is uncalled code that is not externally visible and is not a known runtime entry point. If this violation fires in error, please send a problem report to the FxCop team.</Description>
+    <Resolution Name="Default">'{0}' appears to have no upstream public or protected callers.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Performance/AvoidUncalledPrivateCode.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="75">Warning</MessageLevel>
+    <File Name="PerformanceRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="AvoidUnusedParameters" Category="Microsoft.Performance" CheckId="CA1801">
+    <Name>Avoid unused parameters</Name>
+    <Description>Avoid declaring parameters that are not used in the method body. Unused parameters incur maintenance and performance costs. Sometimes a violation of this rule can point to an implementation bug in the method (i.e. the parameter should actually have been used in the method body). Exclude warnings of this rule if the parameter has to exist because of backward compatibility.</Description>
+    <Resolution Name="Default">Parameter '{0}' of {1} is never used. Remove the parameter or use it in the method body.</Resolution>
+    <Resolution Name="MarkAsStatic">The 'this' parameter (or 'Me' in VB) of {0} is never used. Mark the method as static (or Shared in VB) or use 'this'/Me in the method body.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Performance/AvoidUnusedParameters.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="95">Warning</MessageLevel>
+    <File Name="PerformanceRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="ComVisibleTypeBaseTypesShouldBeComVisible" Category="Microsoft.Interoperability" CheckId="CA1405">
+    <Name>Com visible type base types should be ComVisible</Name>
+    <Description>COM visible types that might be accessed from Microsoft Visual Basic 6 clients should not expose methods with long arguments.</Description>
+    <Resolution Name="Default">'{0}' is marked ComVisible(true) but has the following ComVisible(false) types in its object hierarchy: {1}</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Interoperability/ComVisibleTypeBaseTypesShouldBeComVisible.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="90">Error</MessageLevel>
+    <File Name="InteroperabilityRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="DoNotInitializeUnnecessarily" Category="Microsoft.Performance" CheckId="CA1805">
+    <Name>Do not initialize unnecessarily</Name>
+    <Description>Do not make initializations that have already been done by the runtime.</Description>
+    <Resolution Name="Default">{0} initializes field '{1}', a {2}, to {3}. Remove this initialization, as it will be done automatically by the runtime.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Performance/DoNotInitializeUnnecessarily.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="90">Warning</MessageLevel>
+    <File Name="PerformanceRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="DoNotPassLiteralsAsLocalizedParameters" Category="Microsoft.Globalization" CheckId="CA1303">
+    <Name>Do not pass literals as localized parameters</Name>
+    <Description>String literals that are embedded in source code are difficult to localize. Avoid passing string literals as arguments in circumstances where a localized string is generally expected. Most localized applications, for example, should localize string arguments that are passed to exception constructors. When creating an Exception instance, therefore, a string argument retrieved from a string table is more appropriate than a string literal.</Description>
+    <Resolution Name="Default">{0} passes a literal as parameter {1} of a call to {2}. Retrieve the following string argument from a resource table instead: '{3}'</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Globalization/DoNotPassLiteralsAsLocalizedParameters.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="95">Error</MessageLevel>
+    <File Name="GlobalizationRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
+    <Name>Identifiers should be cased correctly</Name>
+    <Description>Type, namespace, and member identifiers are pascal-cased. Parameter identifiers are camel-cased. The pascal-casing convention capitalizes the first letter of each word, as in BackColor. The camel-casing convention formats the first letter of the first word in lowercase and capitalizes the first letter of all subsequent words, as in backgroundColor.</Description>
+    <Resolution Name="Member">Correct the casing of member name '{0}'.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Naming/IdentifiersShouldBeCasedCorrectly.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="95">Error</MessageLevel>
+    <File Name="NamingRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
+    <Name>Identifiers should be spelled correctly</Name>
+    <Description>The individual words that make up an identifier should not be abbreviated and should be spelled correctly. If this rule generates a false positive on a term that should be recognized, add the word to the FxCop custom dictionary.</Description>
+    <Resolution Name="Namespace">Correct the spelling of the unrecognized token '{0}' in namespace '{1}'.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Naming/IdentifiersShouldBeSpelledCorrectly.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="75">CriticalWarning</MessageLevel>
+    <File Name="NamingRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="IdentifiersShouldNotHaveIncorrectSuffix" Category="Microsoft.Naming" CheckId="CA1711">
+    <Name>Identifiers should not have incorrect suffix</Name>
+    <Description>Types that do not extend certain base types should not use reserved name suffixes.</Description>
+    <Resolution Name="Default">Rename '{0}' so that it does not end in '{1}'.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Naming/IdentifiersShouldNotHaveIncorrectSuffix.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="95">CriticalError</MessageLevel>
+    <File Name="NamingRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014">
+    <Name>Mark assemblies with CLSCompliant</Name>
+    <Description>Assemblies should explicitly state their Cls compliance using the CLSCompliant attribute. An assembly without this attribute is not CLS-compliant. Assemblies, modules, and types can be CLS-compliant even if some parts of the assembly, module, or type are not CLS-compliant. The following rules apply: 1) If the element is marked CLSCompliant, any noncompliant members must have the CLSCompliant attribute present with its argument set to false. 2) A comparable CLS-compliant alternative member must be supplied for each member that is not CLS-compliant.</Description>
+    <Resolution Name="NoAttr">'{0}' should be marked with CLSCompliantAttribute and its value should be true.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Design/MarkAssembliesWithClsCompliant.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="99">Error</MessageLevel>
+    <File Name="DesignRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="MarkAssembliesWithComVisible" Category="Microsoft.Design" CheckId="CA1017">
+    <Name>Mark assemblies with ComVisible</Name>
+    <Description>The ComVisible attribute indicates whether COM clients can use the library. Good design dictates that developers explicitly indicate COM visibility. The default value for this attribute is 'true'. However, the best design is to mark the assembly ComVisible false, and then marking types, interfaces, and individual members as ComVisible true, as appropriate. For more information, see the Design Guidelines section titled Exposing Functionality to COM.</Description>
+    <Resolution Name="NoAttribute">Explicitly mark '{0}' with the ComVisible attribute.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Design/MarkAssembliesWithComVisible.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="99">CriticalError, Error</MessageLevel>
+    <File Name="DesignRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804">
+    <Name>Remove unused locals</Name>
+    <Description>Remove locals that are not used or are only assigned to in method implementations.</Description>
+    <Resolution Name="Default">{0} declares a local, '{1}', of type {2}, which is never used or is only assigned to. Use this local or remove it.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Performance/RemoveUnusedLocals.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="95">Warning</MessageLevel>
+    <File Name="PerformanceRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="TypeNamesShouldNotMatchNamespaces" Category="Microsoft.Naming" CheckId="CA1724">
+    <Name>Type names should not match namespaces</Name>
+    <Description>Identifiers which conflict in whole or in part with namespace names should be avoided. Names that describe the purpose or contents of a type are preferred.</Description>
+    <Resolution Name="Default">The type name '{0}' conflicts in whole or in part with the namespace name '{1}'. Change either name to eliminate the conflict.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Naming/TypeNamesShouldNotMatchNamespaces.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="95">Error</MessageLevel>
+    <File Name="NamingRules.dll" Version="1.312.0.0" />
+   </Rule>
+   <Rule TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024">
+    <Name>Use properties where appropriate</Name>
+    <Description>Properties should be used instead of Get/Set methods in most situations. Methods are preferable to properties in the following situations: the operation is a conversion, is expensive or has an observable side-effect; the order of execution is important; calling the member twice in succession creates different results; a member is static but returns a mutable value; or the member returns an array.</Description>
+    <Resolution Name="Default">Change '{0}' to a property if appropriate.</Resolution>
+    <Owner />
+    <Url>http://www.gotdotnet.com/team/fxcop/docs/rules.aspx?version=1.312&amp;&amp;url=/Design/UsePropertiesWhereAppropriate.html</Url>
+    <Email>askfxcop@microsoft.com</Email>
+    <MessageLevel Certainty="75">Warning</MessageLevel>
+    <File Name="DesignRules.dll" Version="1.312.0.0" />
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>

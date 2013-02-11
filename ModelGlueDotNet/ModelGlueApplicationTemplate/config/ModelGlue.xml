@@ -1,0 +1,62 @@
+﻿<modelglue>
+	<config>
+		<setting name="defaultEvent" value="Home" />
+		<setting name="reload" value="true" />
+		<setting name="reloadKey" value="init" />
+		<setting name="reloadPassword" value="true" />
+		<setting name="statePrecedence" value="Form" />
+		<setting name="eventValue" value="event" />
+		<setting name="applicationMapping" value="/" />
+		<setting name="beanMappings" value="/config/beans/" />
+		<setting name="viewMappings" value="/views" />
+		<setting name="defaultExceptionHandler" value="Exception" />
+		<setting name="debug" value="true" />
+	</config>
+
+	<controllers>
+		<!-- 
+		<controller name="myController" type="ModelGlueApplicationTemplate.controller.Controller">
+			<message-listener message="OnRequestStart" function="OnRequestStart" />
+			<message-listener message="OnRequestEnd" function="OnRequestEnd" />
+		</controller>
+		-->
+	</controllers>
+  
+	<event-handlers>
+		<!-- Event-Handler Template
+			<event-handler name="Example">
+				<broadcasts>
+					<message name="DoSomething">
+						<argument name="SampleArg" value="iAmASampleArgument" />
+					</message>
+				</broadcasts>
+				<views>
+					<include name="body" template="page.cfm" append="false" />
+				</views>
+				<results>
+					<result name="resultValue" do="EventHandlerName" />
+					<result name="failure" do="Exception" />
+				</results>
+			</event>
+		--> 
+
+		<event-handler name="Home">
+			<broadcasts />
+			<views>
+				<include name="body" template="dsp.body.ascx" />
+				<include name="main" template="layout.main.ascx" />
+			</views>
+			<results />
+		</event-handler>
+
+		<event-handler name="Exception">
+			<broadcasts />
+			<views>
+				<include name="body" template="exception.ascx" />
+			</views>
+			<results />
+		</event-handler>
+		
+	</event-handlers>
+	
+</modelglue>

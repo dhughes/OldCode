@@ -1,0 +1,662 @@
+<!-- saved from url=(0014)about:internet -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>JPGEncoder.as</title>
+<link rel="stylesheet" type="text/css" href="../../../../../SourceStyles.css"/>
+</head>
+
+<body><pre><span class="asComment">/*
+    Adobe Systems Incorporated(r) Source Code License Agreement
+    Copyright(c) 2005 Adobe Systems Incorporated. All rights reserved.
+    
+    Please read this Source Code License Agreement carefully before using
+    the source code.
+    
+    Adobe Systems Incorporated grants to you a perpetual, worldwide, non-exclusive, 
+    no-charge, royalty-free, irrevocable copyright license, to reproduce,
+    prepare derivative works of, publicly display, publicly perform, and
+    distribute this source code and such derivative works in source or 
+    object code form without any attribution requirements.  
+    
+    The name &quot;Adobe Systems Incorporated&quot; must not be used to endorse or promote products
+    derived from the source code without prior written permission.
+    
+    You agree to indemnify, hold harmless and defend Adobe Systems Incorporated from and
+    against any loss, damage, claims or lawsuits, including attorney&apos;s 
+    fees that arise or result from your use or distribution of the source 
+    code.
+    
+    THIS SOURCE CODE IS PROVIDED &quot;AS IS&quot; AND &quot;WITH ALL FAULTS&quot;, WITHOUT 
+    ANY TECHNICAL SUPPORT OR ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING,
+    BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+    FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  ALSO, THERE IS NO WARRANTY OF 
+    NON-INFRINGEMENT, TITLE OR QUIET ENJOYMENT.  IN NO EVENT SHALL MACROMEDIA
+    OR ITS SUPPLIERS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+    WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+    OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOURCE CODE, EVEN IF
+    ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/</span>
+<span class="asPackage">package</span> com.adobe.images
+<span class="asBracket">{</span>
+    <span class="asReserved">import</span> flash.geom.<span class="asOperator">*</span>;
+    <span class="asReserved">import</span> flash.display.<span class="asOperator">*</span>;
+    <span class="asReserved">import</span> flash.utils.<span class="asOperator">*</span>;
+    
+    <span class="asDoc">/**
+     * Class that converts BitmapData into a valid JPEG
+     */</span>        
+    <span class="asReserved">public</span> <span class="asClass">class</span> JPGEncoder
+    <span class="asBracket">{</span>
+
+        <span class="asComment">// Static table initialization
+</span>    
+        <span class="asReserved">private</span> <span class="asVar">var</span> ZigZag<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>
+             0, 1, 5, 6,14,15,27,28,
+             2, 4, 7,13,16,26,29,42,
+             3, 8,12,17,25,30,41,43,
+             9,11,18,24,31,40,44,53,
+            10,19,23,32,39,45,52,54,
+            20,22,33,38,46,51,55,60,
+            21,34,37,47,50,56,59,61,
+            35,36,48,49,57,58,62,63
+        <span class="asBracket">]</span>;
+    
+        <span class="asReserved">private</span> <span class="asVar">var</span> YTable<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">(</span>64<span class="asBracket">)</span>;
+        <span class="asReserved">private</span> <span class="asVar">var</span> UVTable<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">(</span>64<span class="asBracket">)</span>;
+        <span class="asReserved">private</span> <span class="asVar">var</span> fdtbl_Y<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">(</span>64<span class="asBracket">)</span>;
+        <span class="asReserved">private</span> <span class="asVar">var</span> fdtbl_UV<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">(</span>64<span class="asBracket">)</span>;
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> initQuantTables<span class="asBracket">(</span>sf<span class="asOperator">:</span>int<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asVar">var</span> i<span class="asOperator">:</span>int;
+            <span class="asVar">var</span> t<span class="asOperator">:</span>Number;
+            <span class="asVar">var</span> YQT<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>
+                16, 11, 10, 16, 24, 40, 51, 61,
+                12, 12, 14, 19, 26, 58, 60, 55,
+                14, 13, 16, 24, 40, 57, 69, 56,
+                14, 17, 22, 29, 51, 87, 80, 62,
+                18, 22, 37, 56, 68,109,103, 77,
+                24, 35, 55, 64, 81,104,113, 92,
+                49, 64, 78, 87,103,121,120,101,
+                72, 92, 95, 98,112,100,103, 99
+            <span class="asBracket">]</span>;
+            <span class="asReserved">for</span> <span class="asBracket">(</span>i <span class="asOperator">=</span> 0; i <span class="asOperator">&lt;</span> 64; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                t <span class="asOperator">=</span> Math.floor<span class="asBracket">((</span>YQT<span class="asBracket">[</span>i<span class="asBracket">]</span><span class="asOperator">*</span>sf<span class="asOperator">+</span>50<span class="asBracket">)</span><span class="asOperator">/</span>100<span class="asBracket">)</span>;
+                <span class="asReserved">if</span> <span class="asBracket">(</span>t <span class="asOperator">&lt;</span> 1<span class="asBracket">)</span> <span class="asBracket">{</span>
+                    t <span class="asOperator">=</span> 1;
+                <span class="asBracket">}</span> <span class="asReserved">else</span> <span class="asReserved">if</span> <span class="asBracket">(</span>t <span class="asOperator">&gt;</span> 255<span class="asBracket">)</span> <span class="asBracket">{</span>
+                    t <span class="asOperator">=</span> 255;
+                <span class="asBracket">}</span>
+                YTable<span class="asBracket">[</span>ZigZag<span class="asBracket">[</span>i<span class="asBracket">]]</span> <span class="asOperator">=</span> t;
+            <span class="asBracket">}</span>
+            <span class="asVar">var</span> UVQT<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>
+                17, 18, 24, 47, 99, 99, 99, 99,
+                18, 21, 26, 66, 99, 99, 99, 99,
+                24, 26, 56, 99, 99, 99, 99, 99,
+                47, 66, 99, 99, 99, 99, 99, 99,
+                99, 99, 99, 99, 99, 99, 99, 99,
+                99, 99, 99, 99, 99, 99, 99, 99,
+                99, 99, 99, 99, 99, 99, 99, 99,
+                99, 99, 99, 99, 99, 99, 99, 99
+            <span class="asBracket">]</span>;
+            <span class="asReserved">for</span> <span class="asBracket">(</span>i <span class="asOperator">=</span> 0; i <span class="asOperator">&lt;</span> 64; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                t <span class="asOperator">=</span> Math.floor<span class="asBracket">((</span>UVQT<span class="asBracket">[</span>i<span class="asBracket">]</span><span class="asOperator">*</span>sf<span class="asOperator">+</span>50<span class="asBracket">)</span><span class="asOperator">/</span>100<span class="asBracket">)</span>;
+                <span class="asReserved">if</span> <span class="asBracket">(</span>t <span class="asOperator">&lt;</span> 1<span class="asBracket">)</span> <span class="asBracket">{</span>
+                    t <span class="asOperator">=</span> 1;
+                <span class="asBracket">}</span> <span class="asReserved">else</span> <span class="asReserved">if</span> <span class="asBracket">(</span>t <span class="asOperator">&gt;</span> 255<span class="asBracket">)</span> <span class="asBracket">{</span>
+                    t <span class="asOperator">=</span> 255;
+                <span class="asBracket">}</span>
+                UVTable<span class="asBracket">[</span>ZigZag<span class="asBracket">[</span>i<span class="asBracket">]]</span> <span class="asOperator">=</span> t;
+            <span class="asBracket">}</span>
+            <span class="asVar">var</span> aasf<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>
+                1.0, 1.387039845, 1.306562965, 1.175875602,
+                1.0, 0.785694958, 0.541196100, 0.275899379
+            <span class="asBracket">]</span>;
+            i <span class="asOperator">=</span> 0;
+            <span class="asReserved">for</span> <span class="asBracket">(</span><span class="asVar">var</span> row<span class="asOperator">:</span>int <span class="asOperator">=</span> 0; row <span class="asOperator">&lt;</span> 8; row<span class="asOperator">++</span><span class="asBracket">)</span>
+            <span class="asBracket">{</span>
+                <span class="asReserved">for</span> <span class="asBracket">(</span><span class="asVar">var</span> col<span class="asOperator">:</span>int <span class="asOperator">=</span> 0; col <span class="asOperator">&lt;</span> 8; col<span class="asOperator">++</span><span class="asBracket">)</span>
+                <span class="asBracket">{</span>
+                    fdtbl_Y<span class="asBracket">[</span>i<span class="asBracket">]</span>  <span class="asOperator">=</span> <span class="asBracket">(</span>1.0 <span class="asOperator">/</span> <span class="asBracket">(</span>YTable <span class="asBracket">[</span>ZigZag<span class="asBracket">[</span>i<span class="asBracket">]]</span> <span class="asOperator">*</span> aasf<span class="asBracket">[</span>row<span class="asBracket">]</span> <span class="asOperator">*</span> aasf<span class="asBracket">[</span>col<span class="asBracket">]</span> <span class="asOperator">*</span> 8.0<span class="asBracket">))</span>;
+                    fdtbl_UV<span class="asBracket">[</span>i<span class="asBracket">]</span> <span class="asOperator">=</span> <span class="asBracket">(</span>1.0 <span class="asOperator">/</span> <span class="asBracket">(</span>UVTable<span class="asBracket">[</span>ZigZag<span class="asBracket">[</span>i<span class="asBracket">]]</span> <span class="asOperator">*</span> aasf<span class="asBracket">[</span>row<span class="asBracket">]</span> <span class="asOperator">*</span> aasf<span class="asBracket">[</span>col<span class="asBracket">]</span> <span class="asOperator">*</span> 8.0<span class="asBracket">))</span>;
+                    i<span class="asOperator">++</span>;
+                <span class="asBracket">}</span>
+            <span class="asBracket">}</span>
+        <span class="asBracket">}</span>
+    
+        <span class="asReserved">private</span> <span class="asVar">var</span> YDC_HT<span class="asOperator">:</span>Array;
+        <span class="asReserved">private</span> <span class="asVar">var</span> UVDC_HT<span class="asOperator">:</span>Array;
+        <span class="asReserved">private</span> <span class="asVar">var</span> YAC_HT<span class="asOperator">:</span>Array;
+        <span class="asReserved">private</span> <span class="asVar">var</span> UVAC_HT<span class="asOperator">:</span>Array;
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> computeHuffmanTbl<span class="asBracket">(</span>nrcodes<span class="asOperator">:</span>Array, std_table<span class="asOperator">:</span>Array<span class="asBracket">)</span><span class="asOperator">:</span>Array
+        <span class="asBracket">{</span>
+            <span class="asVar">var</span> codevalue<span class="asOperator">:</span>int <span class="asOperator">=</span> 0;
+            <span class="asVar">var</span> pos_in_table<span class="asOperator">:</span>int <span class="asOperator">=</span> 0;
+            <span class="asVar">var</span> HT<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">()</span>;
+            <span class="asReserved">for</span> <span class="asBracket">(</span><span class="asVar">var</span> k<span class="asOperator">:</span>int<span class="asOperator">=</span>1; k<span class="asOperator">&lt;=</span>16; k<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                <span class="asReserved">for</span> <span class="asBracket">(</span><span class="asVar">var</span> j<span class="asOperator">:</span>int<span class="asOperator">=</span>1; j<span class="asOperator">&lt;=</span>nrcodes<span class="asBracket">[</span>k<span class="asBracket">]</span>; j<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                    HT<span class="asBracket">[</span>std_table<span class="asBracket">[</span>pos_in_table<span class="asBracket">]]</span> <span class="asOperator">=</span> <span class="asReserved">new</span> BitString<span class="asBracket">()</span>;
+                    HT<span class="asBracket">[</span>std_table<span class="asBracket">[</span>pos_in_table<span class="asBracket">]]</span>.val <span class="asOperator">=</span> codevalue;
+                    HT<span class="asBracket">[</span>std_table<span class="asBracket">[</span>pos_in_table<span class="asBracket">]]</span>.len <span class="asOperator">=</span> k;
+                    pos_in_table<span class="asOperator">++</span>;
+                    codevalue<span class="asOperator">++</span>;
+                <span class="asBracket">}</span>
+                codevalue<span class="asOperator">*=</span>2;
+            <span class="asBracket">}</span>
+            <span class="asReserved">return</span> HT;
+        <span class="asBracket">}</span>
+    
+        <span class="asReserved">private</span> <span class="asVar">var</span> std_dc_luminance_nrcodes<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>0,0,1,5,1,1,1,1,1,1,0,0,0,0,0,0,0<span class="asBracket">]</span>;
+        <span class="asReserved">private</span> <span class="asVar">var</span> std_dc_luminance_values<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>0,1,2,3,4,5,6,7,8,9,10,11<span class="asBracket">]</span>;
+        <span class="asReserved">private</span> <span class="asVar">var</span> std_ac_luminance_nrcodes<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>0,0,2,1,3,3,2,4,3,5,5,4,4,0,0,1,0x7d<span class="asBracket">]</span>;
+        <span class="asReserved">private</span> <span class="asVar">var</span> std_ac_luminance_values<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>
+            0x01,0x02,0x03,0x00,0x04,0x11,0x05,0x12,
+            0x21,0x31,0x41,0x06,0x13,0x51,0x61,0x07,
+            0x22,0x71,0x14,0x32,0x81,0x91,0xa1,0x08,
+            0x23,0x42,0xb1,0xc1,0x15,0x52,0xd1,0xf0,
+            0x24,0x33,0x62,0x72,0x82,0x09,0x0a,0x16,
+            0x17,0x18,0x19,0x1a,0x25,0x26,0x27,0x28,
+            0x29,0x2a,0x34,0x35,0x36,0x37,0x38,0x39,
+            0x3a,0x43,0x44,0x45,0x46,0x47,0x48,0x49,
+            0x4a,0x53,0x54,0x55,0x56,0x57,0x58,0x59,
+            0x5a,0x63,0x64,0x65,0x66,0x67,0x68,0x69,
+            0x6a,0x73,0x74,0x75,0x76,0x77,0x78,0x79,
+            0x7a,0x83,0x84,0x85,0x86,0x87,0x88,0x89,
+            0x8a,0x92,0x93,0x94,0x95,0x96,0x97,0x98,
+            0x99,0x9a,0xa2,0xa3,0xa4,0xa5,0xa6,0xa7,
+            0xa8,0xa9,0xaa,0xb2,0xb3,0xb4,0xb5,0xb6,
+            0xb7,0xb8,0xb9,0xba,0xc2,0xc3,0xc4,0xc5,
+            0xc6,0xc7,0xc8,0xc9,0xca,0xd2,0xd3,0xd4,
+            0xd5,0xd6,0xd7,0xd8,0xd9,0xda,0xe1,0xe2,
+            0xe3,0xe4,0xe5,0xe6,0xe7,0xe8,0xe9,0xea,
+            0xf1,0xf2,0xf3,0xf4,0xf5,0xf6,0xf7,0xf8,
+            0xf9,0xfa
+        <span class="asBracket">]</span>;
+    
+        <span class="asReserved">private</span> <span class="asVar">var</span> std_dc_chrominance_nrcodes<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>0,0,3,1,1,1,1,1,1,1,1,1,0,0,0,0,0<span class="asBracket">]</span>;
+        <span class="asReserved">private</span> <span class="asVar">var</span> std_dc_chrominance_values<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>0,1,2,3,4,5,6,7,8,9,10,11<span class="asBracket">]</span>;
+        <span class="asReserved">private</span> <span class="asVar">var</span> std_ac_chrominance_nrcodes<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>0,0,2,1,2,4,4,3,4,7,5,4,4,0,1,2,0x77<span class="asBracket">]</span>;
+        <span class="asReserved">private</span> <span class="asVar">var</span> std_ac_chrominance_values<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asBracket">[</span>
+            0x00,0x01,0x02,0x03,0x11,0x04,0x05,0x21,
+            0x31,0x06,0x12,0x41,0x51,0x07,0x61,0x71,
+            0x13,0x22,0x32,0x81,0x08,0x14,0x42,0x91,
+            0xa1,0xb1,0xc1,0x09,0x23,0x33,0x52,0xf0,
+            0x15,0x62,0x72,0xd1,0x0a,0x16,0x24,0x34,
+            0xe1,0x25,0xf1,0x17,0x18,0x19,0x1a,0x26,
+            0x27,0x28,0x29,0x2a,0x35,0x36,0x37,0x38,
+            0x39,0x3a,0x43,0x44,0x45,0x46,0x47,0x48,
+            0x49,0x4a,0x53,0x54,0x55,0x56,0x57,0x58,
+            0x59,0x5a,0x63,0x64,0x65,0x66,0x67,0x68,
+            0x69,0x6a,0x73,0x74,0x75,0x76,0x77,0x78,
+            0x79,0x7a,0x82,0x83,0x84,0x85,0x86,0x87,
+            0x88,0x89,0x8a,0x92,0x93,0x94,0x95,0x96,
+            0x97,0x98,0x99,0x9a,0xa2,0xa3,0xa4,0xa5,
+            0xa6,0xa7,0xa8,0xa9,0xaa,0xb2,0xb3,0xb4,
+            0xb5,0xb6,0xb7,0xb8,0xb9,0xba,0xc2,0xc3,
+            0xc4,0xc5,0xc6,0xc7,0xc8,0xc9,0xca,0xd2,
+            0xd3,0xd4,0xd5,0xd6,0xd7,0xd8,0xd9,0xda,
+            0xe2,0xe3,0xe4,0xe5,0xe6,0xe7,0xe8,0xe9,
+            0xea,0xf2,0xf3,0xf4,0xf5,0xf6,0xf7,0xf8,
+            0xf9,0xfa
+        <span class="asBracket">]</span>;
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> initHuffmanTbl<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            YDC_HT <span class="asOperator">=</span> computeHuffmanTbl<span class="asBracket">(</span>std_dc_luminance_nrcodes,std_dc_luminance_values<span class="asBracket">)</span>;
+            UVDC_HT <span class="asOperator">=</span> computeHuffmanTbl<span class="asBracket">(</span>std_dc_chrominance_nrcodes,std_dc_chrominance_values<span class="asBracket">)</span>;
+            YAC_HT <span class="asOperator">=</span> computeHuffmanTbl<span class="asBracket">(</span>std_ac_luminance_nrcodes,std_ac_luminance_values<span class="asBracket">)</span>;
+            UVAC_HT <span class="asOperator">=</span> computeHuffmanTbl<span class="asBracket">(</span>std_ac_chrominance_nrcodes,std_ac_chrominance_values<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+    
+        <span class="asReserved">private</span> <span class="asVar">var</span> bitcode<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">(</span>65535<span class="asBracket">)</span>;
+        <span class="asReserved">private</span> <span class="asVar">var</span> category<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">(</span>65535<span class="asBracket">)</span>;
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> initCategoryNumber<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asVar">var</span> nrlower<span class="asOperator">:</span>int <span class="asOperator">=</span> 1;
+            <span class="asVar">var</span> nrupper<span class="asOperator">:</span>int <span class="asOperator">=</span> 2;
+            <span class="asVar">var</span> nr<span class="asOperator">:</span>int;
+            <span class="asReserved">for</span> <span class="asBracket">(</span><span class="asVar">var</span> cat<span class="asOperator">:</span>int<span class="asOperator">=</span>1; cat<span class="asOperator">&lt;=</span>15; cat<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                <span class="asComment">//Positive numbers
+</span>                <span class="asReserved">for</span> <span class="asBracket">(</span>nr<span class="asOperator">=</span>nrlower; nr<span class="asOperator">&lt;</span>nrupper; nr<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                    category<span class="asBracket">[</span>32767<span class="asOperator">+</span>nr<span class="asBracket">]</span> <span class="asOperator">=</span> cat;
+                    bitcode<span class="asBracket">[</span>32767<span class="asOperator">+</span>nr<span class="asBracket">]</span> <span class="asOperator">=</span> <span class="asReserved">new</span> BitString<span class="asBracket">()</span>;
+                    bitcode<span class="asBracket">[</span>32767<span class="asOperator">+</span>nr<span class="asBracket">]</span>.len <span class="asOperator">=</span> cat;
+                    bitcode<span class="asBracket">[</span>32767<span class="asOperator">+</span>nr<span class="asBracket">]</span>.val <span class="asOperator">=</span> nr;
+                <span class="asBracket">}</span>
+                <span class="asComment">//Negative numbers
+</span>                <span class="asReserved">for</span> <span class="asBracket">(</span>nr<span class="asOperator">=-</span><span class="asBracket">(</span>nrupper<span class="asOperator">-</span>1<span class="asBracket">)</span>; nr<span class="asOperator">&lt;=-</span>nrlower; nr<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                    category<span class="asBracket">[</span>32767<span class="asOperator">+</span>nr<span class="asBracket">]</span> <span class="asOperator">=</span> cat;
+                    bitcode<span class="asBracket">[</span>32767<span class="asOperator">+</span>nr<span class="asBracket">]</span> <span class="asOperator">=</span> <span class="asReserved">new</span> BitString<span class="asBracket">()</span>;
+                    bitcode<span class="asBracket">[</span>32767<span class="asOperator">+</span>nr<span class="asBracket">]</span>.len <span class="asOperator">=</span> cat;
+                    bitcode<span class="asBracket">[</span>32767<span class="asOperator">+</span>nr<span class="asBracket">]</span>.val <span class="asOperator">=</span> nrupper<span class="asOperator">-</span>1<span class="asOperator">+</span>nr;
+                <span class="asBracket">}</span>
+                nrlower <span class="asOperator">&lt;&lt;=</span> 1;
+                nrupper <span class="asOperator">&lt;&lt;=</span> 1;
+            <span class="asBracket">}</span>
+        <span class="asBracket">}</span>
+    
+        <span class="asComment">// IO functions
+</span>    
+        <span class="asReserved">private</span> <span class="asVar">var</span> byteout<span class="asOperator">:</span>ByteArray;
+        <span class="asReserved">private</span> <span class="asVar">var</span> bytenew<span class="asOperator">:</span>int <span class="asOperator">=</span> 0;
+        <span class="asReserved">private</span> <span class="asVar">var</span> bytepos<span class="asOperator">:</span>int <span class="asOperator">=</span> 7;
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> writeBits<span class="asBracket">(</span>bs<span class="asOperator">:</span>BitString<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asVar">var</span> value<span class="asOperator">:</span>int <span class="asOperator">=</span> bs.val;
+            <span class="asVar">var</span> posval<span class="asOperator">:</span>int <span class="asOperator">=</span> bs.len<span class="asOperator">-</span>1;
+            <span class="asReserved">while</span> <span class="asBracket">(</span> posval <span class="asOperator">&gt;=</span> 0 <span class="asBracket">)</span> <span class="asBracket">{</span>
+                <span class="asReserved">if</span> <span class="asBracket">(</span>value <span class="asOperator">&amp;</span> uint<span class="asBracket">(</span>1 <span class="asOperator">&lt;&lt;</span> posval<span class="asBracket">)</span> <span class="asBracket">)</span> <span class="asBracket">{</span>
+                    bytenew <span class="asOperator">|=</span> uint<span class="asBracket">(</span>1 <span class="asOperator">&lt;&lt;</span> bytepos<span class="asBracket">)</span>;
+                <span class="asBracket">}</span>
+                posval<span class="asOperator">--</span>;
+                bytepos<span class="asOperator">--</span>;
+                <span class="asReserved">if</span> <span class="asBracket">(</span>bytepos <span class="asOperator">&lt;</span> 0<span class="asBracket">)</span> <span class="asBracket">{</span>
+                    <span class="asReserved">if</span> <span class="asBracket">(</span>bytenew <span class="asOperator">==</span> 0xFF<span class="asBracket">)</span> <span class="asBracket">{</span>
+                        writeByte<span class="asBracket">(</span>0xFF<span class="asBracket">)</span>;
+                        writeByte<span class="asBracket">(</span>0<span class="asBracket">)</span>;
+                    <span class="asBracket">}</span>
+                    <span class="asReserved">else</span> <span class="asBracket">{</span>
+                        writeByte<span class="asBracket">(</span>bytenew<span class="asBracket">)</span>;
+                    <span class="asBracket">}</span>
+                    bytepos<span class="asOperator">=</span>7;
+                    bytenew<span class="asOperator">=</span>0;
+                <span class="asBracket">}</span>
+            <span class="asBracket">}</span>
+        <span class="asBracket">}</span>
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> writeByte<span class="asBracket">(</span>value<span class="asOperator">:</span>int<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            byteout.writeByte<span class="asBracket">(</span>value<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> writeWord<span class="asBracket">(</span>value<span class="asOperator">:</span>int<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            writeByte<span class="asBracket">((</span>value<span class="asOperator">&gt;&gt;</span>8<span class="asBracket">)</span><span class="asOperator">&amp;</span>0xFF<span class="asBracket">)</span>;
+            writeByte<span class="asBracket">((</span>value   <span class="asBracket">)</span><span class="asOperator">&amp;</span>0xFF<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+    
+        <span class="asComment">// DCT &amp; quantization core
+</span>    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> fDCTQuant<span class="asBracket">(</span>data<span class="asOperator">:</span>Array, fdtbl<span class="asOperator">:</span>Array<span class="asBracket">)</span><span class="asOperator">:</span>Array
+        <span class="asBracket">{</span>
+            <span class="asVar">var</span> tmp0<span class="asOperator">:</span>Number, tmp1<span class="asOperator">:</span>Number, tmp2<span class="asOperator">:</span>Number, tmp3<span class="asOperator">:</span>Number, tmp4<span class="asOperator">:</span>Number, tmp5<span class="asOperator">:</span>Number, tmp6<span class="asOperator">:</span>Number, tmp7<span class="asOperator">:</span>Number;
+            <span class="asVar">var</span> tmp10<span class="asOperator">:</span>Number, tmp11<span class="asOperator">:</span>Number, tmp12<span class="asOperator">:</span>Number, tmp13<span class="asOperator">:</span>Number;
+            <span class="asVar">var</span> z1<span class="asOperator">:</span>Number, z2<span class="asOperator">:</span>Number, z3<span class="asOperator">:</span>Number, z4<span class="asOperator">:</span>Number, z5<span class="asOperator">:</span>Number, z11<span class="asOperator">:</span>Number, z13<span class="asOperator">:</span>Number;
+            <span class="asVar">var</span> i<span class="asOperator">:</span>int;
+            <span class="asComment">/* Pass 1: process rows. */</span>
+            <span class="asVar">var</span> dataOff<span class="asOperator">:</span>int<span class="asOperator">=</span>0;
+            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0; i<span class="asOperator">&lt;</span>8; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                tmp0 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>0<span class="asBracket">]</span> <span class="asOperator">+</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>7<span class="asBracket">]</span>;
+                tmp7 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>0<span class="asBracket">]</span> <span class="asOperator">-</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>7<span class="asBracket">]</span>;
+                tmp1 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>1<span class="asBracket">]</span> <span class="asOperator">+</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>6<span class="asBracket">]</span>;
+                tmp6 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>1<span class="asBracket">]</span> <span class="asOperator">-</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>6<span class="asBracket">]</span>;
+                tmp2 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>2<span class="asBracket">]</span> <span class="asOperator">+</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>5<span class="asBracket">]</span>;
+                tmp5 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>2<span class="asBracket">]</span> <span class="asOperator">-</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>5<span class="asBracket">]</span>;
+                tmp3 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>3<span class="asBracket">]</span> <span class="asOperator">+</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>4<span class="asBracket">]</span>;
+                tmp4 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>3<span class="asBracket">]</span> <span class="asOperator">-</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>4<span class="asBracket">]</span>;
+    
+                <span class="asComment">/* Even part */</span>
+                tmp10 <span class="asOperator">=</span> tmp0 <span class="asOperator">+</span> tmp3;    <span class="asComment">/* phase 2 */</span>
+                tmp13 <span class="asOperator">=</span> tmp0 <span class="asOperator">-</span> tmp3;
+                tmp11 <span class="asOperator">=</span> tmp1 <span class="asOperator">+</span> tmp2;
+                tmp12 <span class="asOperator">=</span> tmp1 <span class="asOperator">-</span> tmp2;
+    
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>0<span class="asBracket">]</span> <span class="asOperator">=</span> tmp10 <span class="asOperator">+</span> tmp11; <span class="asComment">/* phase 3 */</span>
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>4<span class="asBracket">]</span> <span class="asOperator">=</span> tmp10 <span class="asOperator">-</span> tmp11;
+    
+                z1 <span class="asOperator">=</span> <span class="asBracket">(</span>tmp12 <span class="asOperator">+</span> tmp13<span class="asBracket">)</span> <span class="asOperator">*</span> 0.707106781; <span class="asComment">/* c4 */</span>
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>2<span class="asBracket">]</span> <span class="asOperator">=</span> tmp13 <span class="asOperator">+</span> z1; <span class="asComment">/* phase 5 */</span>
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>6<span class="asBracket">]</span> <span class="asOperator">=</span> tmp13 <span class="asOperator">-</span> z1;
+    
+                <span class="asComment">/* Odd part */</span>
+                tmp10 <span class="asOperator">=</span> tmp4 <span class="asOperator">+</span> tmp5; <span class="asComment">/* phase 2 */</span>
+                tmp11 <span class="asOperator">=</span> tmp5 <span class="asOperator">+</span> tmp6;
+                tmp12 <span class="asOperator">=</span> tmp6 <span class="asOperator">+</span> tmp7;
+    
+                <span class="asComment">/* The rotator is modified from fig 4-8 to avoid extra negations. */</span>
+                z5 <span class="asOperator">=</span> <span class="asBracket">(</span>tmp10 <span class="asOperator">-</span> tmp12<span class="asBracket">)</span> <span class="asOperator">*</span> 0.382683433; <span class="asComment">/* c6 */</span>
+                z2 <span class="asOperator">=</span> 0.541196100 <span class="asOperator">*</span> tmp10 <span class="asOperator">+</span> z5; <span class="asComment">/* c2-c6 */</span>
+                z4 <span class="asOperator">=</span> 1.306562965 <span class="asOperator">*</span> tmp12 <span class="asOperator">+</span> z5; <span class="asComment">/* c2+c6 */</span>
+                z3 <span class="asOperator">=</span> tmp11 <span class="asOperator">*</span> 0.707106781; <span class="asComment">/* c4 */</span>
+    
+                z11 <span class="asOperator">=</span> tmp7 <span class="asOperator">+</span> z3;    <span class="asComment">/* phase 5 */</span>
+                z13 <span class="asOperator">=</span> tmp7 <span class="asOperator">-</span> z3;
+    
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>5<span class="asBracket">]</span> <span class="asOperator">=</span> z13 <span class="asOperator">+</span> z2;    <span class="asComment">/* phase 6 */</span>
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>3<span class="asBracket">]</span> <span class="asOperator">=</span> z13 <span class="asOperator">-</span> z2;
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>1<span class="asBracket">]</span> <span class="asOperator">=</span> z11 <span class="asOperator">+</span> z4;
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>7<span class="asBracket">]</span> <span class="asOperator">=</span> z11 <span class="asOperator">-</span> z4;
+    
+                dataOff <span class="asOperator">+=</span> 8; <span class="asComment">/* advance pointer to next row */</span>
+            <span class="asBracket">}</span>
+    
+            <span class="asComment">/* Pass 2: process columns. */</span>
+            dataOff <span class="asOperator">=</span> 0;
+            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0; i<span class="asOperator">&lt;</span>8; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                tmp0 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span> 0<span class="asBracket">]</span> <span class="asOperator">+</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>56<span class="asBracket">]</span>;
+                tmp7 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span> 0<span class="asBracket">]</span> <span class="asOperator">-</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>56<span class="asBracket">]</span>;
+                tmp1 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span> 8<span class="asBracket">]</span> <span class="asOperator">+</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>48<span class="asBracket">]</span>;
+                tmp6 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span> 8<span class="asBracket">]</span> <span class="asOperator">-</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>48<span class="asBracket">]</span>;
+                tmp2 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>16<span class="asBracket">]</span> <span class="asOperator">+</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>40<span class="asBracket">]</span>;
+                tmp5 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>16<span class="asBracket">]</span> <span class="asOperator">-</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>40<span class="asBracket">]</span>;
+                tmp3 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>24<span class="asBracket">]</span> <span class="asOperator">+</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>32<span class="asBracket">]</span>;
+                tmp4 <span class="asOperator">=</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>24<span class="asBracket">]</span> <span class="asOperator">-</span> data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>32<span class="asBracket">]</span>;
+    
+                <span class="asComment">/* Even part */</span>
+                tmp10 <span class="asOperator">=</span> tmp0 <span class="asOperator">+</span> tmp3;    <span class="asComment">/* phase 2 */</span>
+                tmp13 <span class="asOperator">=</span> tmp0 <span class="asOperator">-</span> tmp3;
+                tmp11 <span class="asOperator">=</span> tmp1 <span class="asOperator">+</span> tmp2;
+                tmp12 <span class="asOperator">=</span> tmp1 <span class="asOperator">-</span> tmp2;
+    
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span> 0<span class="asBracket">]</span> <span class="asOperator">=</span> tmp10 <span class="asOperator">+</span> tmp11; <span class="asComment">/* phase 3 */</span>
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>32<span class="asBracket">]</span> <span class="asOperator">=</span> tmp10 <span class="asOperator">-</span> tmp11;
+    
+                z1 <span class="asOperator">=</span> <span class="asBracket">(</span>tmp12 <span class="asOperator">+</span> tmp13<span class="asBracket">)</span> <span class="asOperator">*</span> 0.707106781; <span class="asComment">/* c4 */</span>
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>16<span class="asBracket">]</span> <span class="asOperator">=</span> tmp13 <span class="asOperator">+</span> z1; <span class="asComment">/* phase 5 */</span>
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>48<span class="asBracket">]</span> <span class="asOperator">=</span> tmp13 <span class="asOperator">-</span> z1;
+    
+                <span class="asComment">/* Odd part */</span>
+                tmp10 <span class="asOperator">=</span> tmp4 <span class="asOperator">+</span> tmp5; <span class="asComment">/* phase 2 */</span>
+                tmp11 <span class="asOperator">=</span> tmp5 <span class="asOperator">+</span> tmp6;
+                tmp12 <span class="asOperator">=</span> tmp6 <span class="asOperator">+</span> tmp7;
+    
+                <span class="asComment">/* The rotator is modified from fig 4-8 to avoid extra negations. */</span>
+                z5 <span class="asOperator">=</span> <span class="asBracket">(</span>tmp10 <span class="asOperator">-</span> tmp12<span class="asBracket">)</span> <span class="asOperator">*</span> 0.382683433; <span class="asComment">/* c6 */</span>
+                z2 <span class="asOperator">=</span> 0.541196100 <span class="asOperator">*</span> tmp10 <span class="asOperator">+</span> z5; <span class="asComment">/* c2-c6 */</span>
+                z4 <span class="asOperator">=</span> 1.306562965 <span class="asOperator">*</span> tmp12 <span class="asOperator">+</span> z5; <span class="asComment">/* c2+c6 */</span>
+                z3 <span class="asOperator">=</span> tmp11 <span class="asOperator">*</span> 0.707106781; <span class="asComment">/* c4 */</span>
+    
+                z11 <span class="asOperator">=</span> tmp7 <span class="asOperator">+</span> z3;    <span class="asComment">/* phase 5 */</span>
+                z13 <span class="asOperator">=</span> tmp7 <span class="asOperator">-</span> z3;
+    
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>40<span class="asBracket">]</span> <span class="asOperator">=</span> z13 <span class="asOperator">+</span> z2; <span class="asComment">/* phase 6 */</span>
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>24<span class="asBracket">]</span> <span class="asOperator">=</span> z13 <span class="asOperator">-</span> z2;
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span> 8<span class="asBracket">]</span> <span class="asOperator">=</span> z11 <span class="asOperator">+</span> z4;
+                data<span class="asBracket">[</span>dataOff<span class="asOperator">+</span>56<span class="asBracket">]</span> <span class="asOperator">=</span> z11 <span class="asOperator">-</span> z4;
+    
+                dataOff<span class="asOperator">++</span>; <span class="asComment">/* advance pointer to next column */</span>
+            <span class="asBracket">}</span>
+    
+            <span class="asComment">// Quantize/descale the coefficients
+</span>            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0; i<span class="asOperator">&lt;</span>64; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                <span class="asComment">// Apply the quantization and scaling factor &amp; Round to nearest integer
+</span>                data<span class="asBracket">[</span>i<span class="asBracket">]</span> <span class="asOperator">=</span> Math.round<span class="asBracket">((</span>data<span class="asBracket">[</span>i<span class="asBracket">]</span><span class="asOperator">*</span>fdtbl<span class="asBracket">[</span>i<span class="asBracket">]))</span>;
+            <span class="asBracket">}</span>
+            <span class="asReserved">return</span> data;
+        <span class="asBracket">}</span>
+    
+        <span class="asComment">// Chunk writing
+</span>    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> writeAPP0<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            writeWord<span class="asBracket">(</span>0xFFE0<span class="asBracket">)</span>; <span class="asComment">// marker
+</span>            writeWord<span class="asBracket">(</span>16<span class="asBracket">)</span>; <span class="asComment">// length
+</span>            writeByte<span class="asBracket">(</span>0x4A<span class="asBracket">)</span>; <span class="asComment">// J
+</span>            writeByte<span class="asBracket">(</span>0x46<span class="asBracket">)</span>; <span class="asComment">// F
+</span>            writeByte<span class="asBracket">(</span>0x49<span class="asBracket">)</span>; <span class="asComment">// I
+</span>            writeByte<span class="asBracket">(</span>0x46<span class="asBracket">)</span>; <span class="asComment">// F
+</span>            writeByte<span class="asBracket">(</span>0<span class="asBracket">)</span>; <span class="asComment">// = &quot;JFIF&quot;,&apos;\0&apos;
+</span>            writeByte<span class="asBracket">(</span>1<span class="asBracket">)</span>; <span class="asComment">// versionhi
+</span>            writeByte<span class="asBracket">(</span>1<span class="asBracket">)</span>; <span class="asComment">// versionlo
+</span>            writeByte<span class="asBracket">(</span>0<span class="asBracket">)</span>; <span class="asComment">// xyunits
+</span>            writeWord<span class="asBracket">(</span>1<span class="asBracket">)</span>; <span class="asComment">// xdensity
+</span>            writeWord<span class="asBracket">(</span>1<span class="asBracket">)</span>; <span class="asComment">// ydensity
+</span>            writeByte<span class="asBracket">(</span>0<span class="asBracket">)</span>; <span class="asComment">// thumbnwidth
+</span>            writeByte<span class="asBracket">(</span>0<span class="asBracket">)</span>; <span class="asComment">// thumbnheight
+</span>        <span class="asBracket">}</span>
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> writeSOF0<span class="asBracket">(</span>width<span class="asOperator">:</span>int, height<span class="asOperator">:</span>int<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            writeWord<span class="asBracket">(</span>0xFFC0<span class="asBracket">)</span>; <span class="asComment">// marker
+</span>            writeWord<span class="asBracket">(</span>17<span class="asBracket">)</span>;   <span class="asComment">// length, truecolor YUV JPG
+</span>            writeByte<span class="asBracket">(</span>8<span class="asBracket">)</span>;    <span class="asComment">// precision
+</span>            writeWord<span class="asBracket">(</span>height<span class="asBracket">)</span>;
+            writeWord<span class="asBracket">(</span>width<span class="asBracket">)</span>;
+            writeByte<span class="asBracket">(</span>3<span class="asBracket">)</span>;    <span class="asComment">// nrofcomponents
+</span>            writeByte<span class="asBracket">(</span>1<span class="asBracket">)</span>;    <span class="asComment">// IdY
+</span>            writeByte<span class="asBracket">(</span>0x11<span class="asBracket">)</span>; <span class="asComment">// HVY
+</span>            writeByte<span class="asBracket">(</span>0<span class="asBracket">)</span>;    <span class="asComment">// QTY
+</span>            writeByte<span class="asBracket">(</span>2<span class="asBracket">)</span>;    <span class="asComment">// IdU
+</span>            writeByte<span class="asBracket">(</span>0x11<span class="asBracket">)</span>; <span class="asComment">// HVU
+</span>            writeByte<span class="asBracket">(</span>1<span class="asBracket">)</span>;    <span class="asComment">// QTU
+</span>            writeByte<span class="asBracket">(</span>3<span class="asBracket">)</span>;    <span class="asComment">// IdV
+</span>            writeByte<span class="asBracket">(</span>0x11<span class="asBracket">)</span>; <span class="asComment">// HVV
+</span>            writeByte<span class="asBracket">(</span>1<span class="asBracket">)</span>;    <span class="asComment">// QTV
+</span>        <span class="asBracket">}</span>
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> writeDQT<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            writeWord<span class="asBracket">(</span>0xFFDB<span class="asBracket">)</span>; <span class="asComment">// marker
+</span>            writeWord<span class="asBracket">(</span>132<span class="asBracket">)</span>;       <span class="asComment">// length
+</span>            writeByte<span class="asBracket">(</span>0<span class="asBracket">)</span>;
+            <span class="asVar">var</span> i<span class="asOperator">:</span>int;
+            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0; i<span class="asOperator">&lt;</span>64; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                writeByte<span class="asBracket">(</span>YTable<span class="asBracket">[</span>i<span class="asBracket">])</span>;
+            <span class="asBracket">}</span>
+            writeByte<span class="asBracket">(</span>1<span class="asBracket">)</span>;
+            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0; i<span class="asOperator">&lt;</span>64; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                writeByte<span class="asBracket">(</span>UVTable<span class="asBracket">[</span>i<span class="asBracket">])</span>;
+            <span class="asBracket">}</span>
+        <span class="asBracket">}</span>
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> writeDHT<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            writeWord<span class="asBracket">(</span>0xFFC4<span class="asBracket">)</span>; <span class="asComment">// marker
+</span>            writeWord<span class="asBracket">(</span>0x01A2<span class="asBracket">)</span>; <span class="asComment">// length
+</span>            <span class="asVar">var</span> i<span class="asOperator">:</span>int;
+    
+            writeByte<span class="asBracket">(</span>0<span class="asBracket">)</span>; <span class="asComment">// HTYDCinfo
+</span>            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0; i<span class="asOperator">&lt;</span>16; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                writeByte<span class="asBracket">(</span>std_dc_luminance_nrcodes<span class="asBracket">[</span>i<span class="asOperator">+</span>1<span class="asBracket">])</span>;
+            <span class="asBracket">}</span>
+            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0; i<span class="asOperator">&lt;=</span>11; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                writeByte<span class="asBracket">(</span>std_dc_luminance_values<span class="asBracket">[</span>i<span class="asBracket">])</span>;
+            <span class="asBracket">}</span>
+    
+            writeByte<span class="asBracket">(</span>0x10<span class="asBracket">)</span>; <span class="asComment">// HTYACinfo
+</span>            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0; i<span class="asOperator">&lt;</span>16; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                writeByte<span class="asBracket">(</span>std_ac_luminance_nrcodes<span class="asBracket">[</span>i<span class="asOperator">+</span>1<span class="asBracket">])</span>;
+            <span class="asBracket">}</span>
+            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0; i<span class="asOperator">&lt;=</span>161; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                writeByte<span class="asBracket">(</span>std_ac_luminance_values<span class="asBracket">[</span>i<span class="asBracket">])</span>;
+            <span class="asBracket">}</span>
+    
+            writeByte<span class="asBracket">(</span>1<span class="asBracket">)</span>; <span class="asComment">// HTUDCinfo
+</span>            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0; i<span class="asOperator">&lt;</span>16; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                writeByte<span class="asBracket">(</span>std_dc_chrominance_nrcodes<span class="asBracket">[</span>i<span class="asOperator">+</span>1<span class="asBracket">])</span>;
+            <span class="asBracket">}</span>
+            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0; i<span class="asOperator">&lt;=</span>11; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                writeByte<span class="asBracket">(</span>std_dc_chrominance_values<span class="asBracket">[</span>i<span class="asBracket">])</span>;
+            <span class="asBracket">}</span>
+    
+            writeByte<span class="asBracket">(</span>0x11<span class="asBracket">)</span>; <span class="asComment">// HTUACinfo
+</span>            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0; i<span class="asOperator">&lt;</span>16; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                writeByte<span class="asBracket">(</span>std_ac_chrominance_nrcodes<span class="asBracket">[</span>i<span class="asOperator">+</span>1<span class="asBracket">])</span>;
+            <span class="asBracket">}</span>
+            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0; i<span class="asOperator">&lt;=</span>161; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                writeByte<span class="asBracket">(</span>std_ac_chrominance_values<span class="asBracket">[</span>i<span class="asBracket">])</span>;
+            <span class="asBracket">}</span>
+        <span class="asBracket">}</span>
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> writeSOS<span class="asBracket">()</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            writeWord<span class="asBracket">(</span>0xFFDA<span class="asBracket">)</span>; <span class="asComment">// marker
+</span>            writeWord<span class="asBracket">(</span>12<span class="asBracket">)</span>; <span class="asComment">// length
+</span>            writeByte<span class="asBracket">(</span>3<span class="asBracket">)</span>; <span class="asComment">// nrofcomponents
+</span>            writeByte<span class="asBracket">(</span>1<span class="asBracket">)</span>; <span class="asComment">// IdY
+</span>            writeByte<span class="asBracket">(</span>0<span class="asBracket">)</span>; <span class="asComment">// HTY
+</span>            writeByte<span class="asBracket">(</span>2<span class="asBracket">)</span>; <span class="asComment">// IdU
+</span>            writeByte<span class="asBracket">(</span>0x11<span class="asBracket">)</span>; <span class="asComment">// HTU
+</span>            writeByte<span class="asBracket">(</span>3<span class="asBracket">)</span>; <span class="asComment">// IdV
+</span>            writeByte<span class="asBracket">(</span>0x11<span class="asBracket">)</span>; <span class="asComment">// HTV
+</span>            writeByte<span class="asBracket">(</span>0<span class="asBracket">)</span>; <span class="asComment">// Ss
+</span>            writeByte<span class="asBracket">(</span>0x3f<span class="asBracket">)</span>; <span class="asComment">// Se
+</span>            writeByte<span class="asBracket">(</span>0<span class="asBracket">)</span>; <span class="asComment">// Bf
+</span>        <span class="asBracket">}</span>
+    
+        <span class="asComment">// Core processing
+</span>        <span class="asReserved">private</span> <span class="asVar">var</span> DU<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">(</span>64<span class="asBracket">)</span>;
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> processDU<span class="asBracket">(</span>CDU<span class="asOperator">:</span>Array, fdtbl<span class="asOperator">:</span>Array, DC<span class="asOperator">:</span>Number, HTDC<span class="asOperator">:</span>Array, HTAC<span class="asOperator">:</span>Array<span class="asBracket">)</span><span class="asOperator">:</span>Number
+        <span class="asBracket">{</span>
+            <span class="asVar">var</span> EOB<span class="asOperator">:</span>BitString <span class="asOperator">=</span> HTAC<span class="asBracket">[</span>0x00<span class="asBracket">]</span>;
+            <span class="asVar">var</span> M16zeroes<span class="asOperator">:</span>BitString <span class="asOperator">=</span> HTAC<span class="asBracket">[</span>0xF0<span class="asBracket">]</span>;
+            <span class="asVar">var</span> i<span class="asOperator">:</span>int;
+    
+            <span class="asVar">var</span> DU_DCT<span class="asOperator">:</span>Array <span class="asOperator">=</span> fDCTQuant<span class="asBracket">(</span>CDU, fdtbl<span class="asBracket">)</span>;
+            <span class="asComment">//ZigZag reorder
+</span>            <span class="asReserved">for</span> <span class="asBracket">(</span>i<span class="asOperator">=</span>0;i<span class="asOperator">&lt;</span>64;i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                DU<span class="asBracket">[</span>ZigZag<span class="asBracket">[</span>i<span class="asBracket">]]</span><span class="asOperator">=</span>DU_DCT<span class="asBracket">[</span>i<span class="asBracket">]</span>;
+            <span class="asBracket">}</span>
+            <span class="asVar">var</span> Diff<span class="asOperator">:</span>int <span class="asOperator">=</span> DU<span class="asBracket">[</span>0<span class="asBracket">]</span> <span class="asOperator">-</span> DC; DC <span class="asOperator">=</span> DU<span class="asBracket">[</span>0<span class="asBracket">]</span>;
+            <span class="asComment">//Encode DC
+</span>            <span class="asReserved">if</span> <span class="asBracket">(</span>Diff<span class="asOperator">==</span>0<span class="asBracket">)</span> <span class="asBracket">{</span>
+                writeBits<span class="asBracket">(</span>HTDC<span class="asBracket">[</span>0<span class="asBracket">])</span>; <span class="asComment">// Diff might be 0
+</span>            <span class="asBracket">}</span> <span class="asReserved">else</span> <span class="asBracket">{</span>
+                writeBits<span class="asBracket">(</span>HTDC<span class="asBracket">[</span>category<span class="asBracket">[</span>32767<span class="asOperator">+</span>Diff<span class="asBracket">]])</span>;
+                writeBits<span class="asBracket">(</span>bitcode<span class="asBracket">[</span>32767<span class="asOperator">+</span>Diff<span class="asBracket">])</span>;
+            <span class="asBracket">}</span>
+            <span class="asComment">//Encode ACs
+</span>            <span class="asVar">var</span> end0pos<span class="asOperator">:</span>int <span class="asOperator">=</span> 63;
+            <span class="asReserved">for</span> <span class="asBracket">(</span>; <span class="asBracket">(</span>end0pos<span class="asOperator">&gt;</span>0<span class="asBracket">)</span><span class="asOperator">&amp;&amp;</span><span class="asBracket">(</span>DU<span class="asBracket">[</span>end0pos<span class="asBracket">]</span><span class="asOperator">==</span>0<span class="asBracket">)</span>; end0pos<span class="asOperator">--</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+            <span class="asBracket">}</span>;
+            <span class="asComment">//end0pos = first element in reverse order !=0
+</span>            <span class="asReserved">if</span> <span class="asBracket">(</span> end0pos <span class="asOperator">==</span> 0<span class="asBracket">)</span> <span class="asBracket">{</span>
+                writeBits<span class="asBracket">(</span>EOB<span class="asBracket">)</span>;
+                <span class="asReserved">return</span> DC;
+            <span class="asBracket">}</span>
+            i <span class="asOperator">=</span> 1;
+            <span class="asReserved">while</span> <span class="asBracket">(</span> i <span class="asOperator">&lt;=</span> end0pos <span class="asBracket">)</span> <span class="asBracket">{</span>
+                <span class="asVar">var</span> startpos<span class="asOperator">:</span>int <span class="asOperator">=</span> i;
+                <span class="asReserved">for</span> <span class="asBracket">(</span>; <span class="asBracket">(</span>DU<span class="asBracket">[</span>i<span class="asBracket">]</span><span class="asOperator">==</span>0<span class="asBracket">)</span> <span class="asOperator">&amp;&amp;</span> <span class="asBracket">(</span>i<span class="asOperator">&lt;=</span>end0pos<span class="asBracket">)</span>; i<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                <span class="asBracket">}</span>
+                <span class="asVar">var</span> nrzeroes<span class="asOperator">:</span>int <span class="asOperator">=</span> i<span class="asOperator">-</span>startpos;
+                <span class="asReserved">if</span> <span class="asBracket">(</span> nrzeroes <span class="asOperator">&gt;=</span> 16 <span class="asBracket">)</span> <span class="asBracket">{</span>
+                    <span class="asReserved">for</span> <span class="asBracket">(</span><span class="asVar">var</span> nrmarker<span class="asOperator">:</span>int<span class="asOperator">=</span>1; nrmarker <span class="asOperator">&lt;=</span> nrzeroes<span class="asOperator">/</span>16; nrmarker<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                        writeBits<span class="asBracket">(</span>M16zeroes<span class="asBracket">)</span>;
+                    <span class="asBracket">}</span>
+                    nrzeroes <span class="asOperator">=</span> int<span class="asBracket">(</span>nrzeroes<span class="asOperator">&amp;</span>0xF<span class="asBracket">)</span>;
+                <span class="asBracket">}</span>
+                writeBits<span class="asBracket">(</span>HTAC<span class="asBracket">[</span>nrzeroes<span class="asOperator">*</span>16<span class="asOperator">+</span>category<span class="asBracket">[</span>32767<span class="asOperator">+</span>DU<span class="asBracket">[</span>i<span class="asBracket">]]])</span>;
+                writeBits<span class="asBracket">(</span>bitcode<span class="asBracket">[</span>32767<span class="asOperator">+</span>DU<span class="asBracket">[</span>i<span class="asBracket">]])</span>;
+                i<span class="asOperator">++</span>;
+            <span class="asBracket">}</span>
+            <span class="asReserved">if</span> <span class="asBracket">(</span> end0pos <span class="asOperator">!=</span> 63 <span class="asBracket">)</span> <span class="asBracket">{</span>
+                writeBits<span class="asBracket">(</span>EOB<span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            <span class="asReserved">return</span> DC;
+        <span class="asBracket">}</span>
+    
+        <span class="asReserved">private</span> <span class="asVar">var</span> YDU<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">(</span>64<span class="asBracket">)</span>;
+        <span class="asReserved">private</span> <span class="asVar">var</span> UDU<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">(</span>64<span class="asBracket">)</span>;
+        <span class="asReserved">private</span> <span class="asVar">var</span> VDU<span class="asOperator">:</span>Array <span class="asOperator">=</span> <span class="asReserved">new</span> Array<span class="asBracket">(</span>64<span class="asBracket">)</span>;
+    
+        <span class="asReserved">private</span> <span class="asFunction">function</span> RGB2YUV<span class="asBracket">(</span>img<span class="asOperator">:</span>BitmapData, xpos<span class="asOperator">:</span>int, ypos<span class="asOperator">:</span>int<span class="asBracket">)</span><span class="asOperator">:</span><span class="asReserved">void</span>
+        <span class="asBracket">{</span>
+            <span class="asVar">var</span> pos<span class="asOperator">:</span>int<span class="asOperator">=</span>0;
+            <span class="asReserved">for</span> <span class="asBracket">(</span><span class="asVar">var</span> y<span class="asOperator">:</span>int<span class="asOperator">=</span>0; y<span class="asOperator">&lt;</span>8; y<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                <span class="asReserved">for</span> <span class="asBracket">(</span><span class="asVar">var</span> x<span class="asOperator">:</span>int<span class="asOperator">=</span>0; x<span class="asOperator">&lt;</span>8; x<span class="asOperator">++</span><span class="asBracket">)</span> <span class="asBracket">{</span>
+                    <span class="asVar">var</span> P<span class="asOperator">:</span>uint <span class="asOperator">=</span> img.getPixel32<span class="asBracket">(</span>xpos<span class="asOperator">+</span>x,ypos<span class="asOperator">+</span>y<span class="asBracket">)</span>;
+                    <span class="asVar">var</span> R<span class="asOperator">:</span>Number <span class="asOperator">=</span> Number<span class="asBracket">((</span>P<span class="asOperator">&gt;&gt;</span>16<span class="asBracket">)</span><span class="asOperator">&amp;</span>0xFF<span class="asBracket">)</span>;
+                    <span class="asVar">var</span> G<span class="asOperator">:</span>Number <span class="asOperator">=</span> Number<span class="asBracket">((</span>P<span class="asOperator">&gt;&gt;</span> 8<span class="asBracket">)</span><span class="asOperator">&amp;</span>0xFF<span class="asBracket">)</span>;
+                    <span class="asVar">var</span> B<span class="asOperator">:</span>Number <span class="asOperator">=</span> Number<span class="asBracket">((</span>P    <span class="asBracket">)</span><span class="asOperator">&amp;</span>0xFF<span class="asBracket">)</span>;
+                    YDU<span class="asBracket">[</span>pos<span class="asBracket">]</span><span class="asOperator">=</span><span class="asBracket">(((</span> 0.29900<span class="asBracket">)</span><span class="asOperator">*</span>R<span class="asOperator">+</span><span class="asBracket">(</span> 0.58700<span class="asBracket">)</span><span class="asOperator">*</span>G<span class="asOperator">+</span><span class="asBracket">(</span> 0.11400<span class="asBracket">)</span><span class="asOperator">*</span>B<span class="asBracket">))</span><span class="asOperator">-</span>128;
+                    UDU<span class="asBracket">[</span>pos<span class="asBracket">]</span><span class="asOperator">=</span><span class="asBracket">(((</span><span class="asOperator">-</span>0.16874<span class="asBracket">)</span><span class="asOperator">*</span>R<span class="asOperator">+</span><span class="asBracket">(</span><span class="asOperator">-</span>0.33126<span class="asBracket">)</span><span class="asOperator">*</span>G<span class="asOperator">+</span><span class="asBracket">(</span> 0.50000<span class="asBracket">)</span><span class="asOperator">*</span>B<span class="asBracket">))</span>;
+                    VDU<span class="asBracket">[</span>pos<span class="asBracket">]</span><span class="asOperator">=</span><span class="asBracket">(((</span> 0.50000<span class="asBracket">)</span><span class="asOperator">*</span>R<span class="asOperator">+</span><span class="asBracket">(</span><span class="asOperator">-</span>0.41869<span class="asBracket">)</span><span class="asOperator">*</span>G<span class="asOperator">+</span><span class="asBracket">(</span><span class="asOperator">-</span>0.08131<span class="asBracket">)</span><span class="asOperator">*</span>B<span class="asBracket">))</span>;
+                    pos<span class="asOperator">++</span>;
+                <span class="asBracket">}</span>
+            <span class="asBracket">}</span>
+        <span class="asBracket">}</span>
+    
+        <span class="asDoc">/**
+         * Constructor for JPEGEncoder class
+         *
+         * @param quality The quality level between 1 and 100 that detrmines the
+         * level of compression used in the generated JPEG
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 9.0
+         * @tiptext
+         */</span>        
+        <span class="asReserved">public</span> <span class="asFunction">function</span> JPGEncoder<span class="asBracket">(</span>quality<span class="asOperator">:</span>Number <span class="asOperator">=</span> 50<span class="asBracket">)</span>
+        <span class="asBracket">{</span>
+            <span class="asReserved">if</span> <span class="asBracket">(</span>quality <span class="asOperator">&lt;=</span> 0<span class="asBracket">)</span> <span class="asBracket">{</span>
+                quality <span class="asOperator">=</span> 1;
+            <span class="asBracket">}</span>
+            <span class="asReserved">if</span> <span class="asBracket">(</span>quality <span class="asOperator">&gt;</span> 100<span class="asBracket">)</span> <span class="asBracket">{</span>
+                quality <span class="asOperator">=</span> 100;
+            <span class="asBracket">}</span>
+            <span class="asVar">var</span> sf<span class="asOperator">:</span>int <span class="asOperator">=</span> 0;
+            <span class="asReserved">if</span> <span class="asBracket">(</span>quality <span class="asOperator">&lt;</span> 50<span class="asBracket">)</span> <span class="asBracket">{</span>
+                sf <span class="asOperator">=</span> int<span class="asBracket">(</span>5000 <span class="asOperator">/</span> quality<span class="asBracket">)</span>;
+            <span class="asBracket">}</span> <span class="asReserved">else</span> <span class="asBracket">{</span>
+                sf <span class="asOperator">=</span> int<span class="asBracket">(</span>200 <span class="asOperator">-</span> quality<span class="asOperator">*</span>2<span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+            <span class="asComment">// Create tables
+</span>            initHuffmanTbl<span class="asBracket">()</span>;
+            initCategoryNumber<span class="asBracket">()</span>;
+            initQuantTables<span class="asBracket">(</span>sf<span class="asBracket">)</span>;
+        <span class="asBracket">}</span>
+    
+        <span class="asDoc">/**
+         * Created a JPEG image from the specified BitmapData
+         *
+         * @param image The BitmapData that will be converted into the JPEG format.
+         * @return a ByteArray representing the JPEG encoded image data.
+         * @langversion ActionScript 3.0
+         * @playerversion Flash 9.0
+         * @tiptext
+         */</span>    
+        <span class="asReserved">public</span> <span class="asFunction">function</span> encode<span class="asBracket">(</span>image<span class="asOperator">:</span>BitmapData<span class="asBracket">)</span><span class="asOperator">:</span>ByteArray
+        <span class="asBracket">{</span>
+            <span class="asComment">// Initialize bit writer
+</span>            byteout <span class="asOperator">=</span> <span class="asReserved">new</span> ByteArray<span class="asBracket">()</span>;
+            bytenew<span class="asOperator">=</span>0;
+            bytepos<span class="asOperator">=</span>7;
+    
+            <span class="asComment">// Add JPEG headers
+</span>            writeWord<span class="asBracket">(</span>0xFFD8<span class="asBracket">)</span>; <span class="asComment">// SOI
+</span>            writeAPP0<span class="asBracket">()</span>;
+            writeDQT<span class="asBracket">()</span>;
+            writeSOF0<span class="asBracket">(</span>image.width,image.height<span class="asBracket">)</span>;
+            writeDHT<span class="asBracket">()</span>;
+            writeSOS<span class="asBracket">()</span>;
+
+    
+            <span class="asComment">// Encode 8x8 macroblocks
+</span>            <span class="asVar">var</span> DCY<span class="asOperator">:</span>Number<span class="asOperator">=</span>0;
+            <span class="asVar">var</span> DCU<span class="asOperator">:</span>Number<span class="asOperator">=</span>0;
+            <span class="asVar">var</span> DCV<span class="asOperator">:</span>Number<span class="asOperator">=</span>0;
+            bytenew<span class="asOperator">=</span>0;
+            bytepos<span class="asOperator">=</span>7;
+            <span class="asReserved">for</span> <span class="asBracket">(</span><span class="asVar">var</span> ypos<span class="asOperator">:</span>int<span class="asOperator">=</span>0; ypos<span class="asOperator">&lt;</span>image.height; ypos<span class="asOperator">+=</span>8<span class="asBracket">)</span> <span class="asBracket">{</span>
+                <span class="asReserved">for</span> <span class="asBracket">(</span><span class="asVar">var</span> xpos<span class="asOperator">:</span>int<span class="asOperator">=</span>0; xpos<span class="asOperator">&lt;</span>image.width; xpos<span class="asOperator">+=</span>8<span class="asBracket">)</span> <span class="asBracket">{</span>
+                    RGB2YUV<span class="asBracket">(</span>image, xpos, ypos<span class="asBracket">)</span>;
+                    DCY <span class="asOperator">=</span> processDU<span class="asBracket">(</span>YDU, fdtbl_Y, DCY, YDC_HT, YAC_HT<span class="asBracket">)</span>;
+                    DCU <span class="asOperator">=</span> processDU<span class="asBracket">(</span>UDU, fdtbl_UV, DCU, UVDC_HT, UVAC_HT<span class="asBracket">)</span>;
+                    DCV <span class="asOperator">=</span> processDU<span class="asBracket">(</span>VDU, fdtbl_UV, DCV, UVDC_HT, UVAC_HT<span class="asBracket">)</span>;
+                <span class="asBracket">}</span>
+            <span class="asBracket">}</span>
+    
+            <span class="asComment">// Do the bit alignment of the EOI marker
+</span>            <span class="asReserved">if</span> <span class="asBracket">(</span> bytepos <span class="asOperator">&gt;=</span> 0 <span class="asBracket">)</span> <span class="asBracket">{</span>
+                <span class="asVar">var</span> fillbits<span class="asOperator">:</span>BitString <span class="asOperator">=</span> <span class="asReserved">new</span> BitString<span class="asBracket">()</span>;
+                fillbits.len <span class="asOperator">=</span> bytepos<span class="asOperator">+</span>1;
+                fillbits.val <span class="asOperator">=</span> <span class="asBracket">(</span>1<span class="asOperator">&lt;&lt;</span><span class="asBracket">(</span>bytepos<span class="asOperator">+</span>1<span class="asBracket">))</span><span class="asOperator">-</span>1;
+                writeBits<span class="asBracket">(</span>fillbits<span class="asBracket">)</span>;
+            <span class="asBracket">}</span>
+    
+            writeWord<span class="asBracket">(</span>0xFFD9<span class="asBracket">)</span>; <span class="asComment">//EOI
+</span>            <span class="asReserved">return</span> byteout;
+        <span class="asBracket">}</span>
+    <span class="asBracket">}</span>
+<span class="asBracket">}</span>
+</pre></body>
+</html>

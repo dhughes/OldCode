@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Untitled Document</title>
+<style>
+body{
+	background-color: white;
+	margin: 10px;
+	padding: 0px;
+}
+h1, h2, h3, h4, h5, h6{
+	border-bottom: 1px gray dashed;
+}
+body, p, table, tr, td{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal
+}
+</style>
+</head>
+
+<body>
+<h2>Dreamweaver Template CFCs Documentation</h2>
+<p>The following is the documentation for the Template.cfc and Instance.cfc components. </p>
+<h3>Template.cfc</h3>
+<p>The template.cfc is used to read and work with a Dreamweaver template file (DWT) and provides these methods:</p>
+<h4>readTemplateFromFile(file)</h4>
+<p>The readTemplateFromFile method is used to read a DWT file. The file argument specifies the path to the DWT file being read.</p>
+<h4>writeTemplateToFile(file)</h4>
+<p>The writeTemplateToFile method is used to write the DWT back to disk. This is of use in the case that you use setRegionDefaultValue method to change the template's region's default values.</p>
+<h4>getRegionNames() </h4>
+<p>The getRegionNames method returns an array of all the region names in the template. This can be used in conjunciton with the setRegionDefaultValue method to set default values for regions.</p>
+<h4>getRegions()</h4>
+<p>The getRegions method returns an array of structures describing all of the template's regions. The each array element corrisponds to an editible region within the template. Each array element is a structure containing the following items:</p>
+<p><strong>Name - </strong>The name element is the name of the editible region. This can be used with the get/setRegionDefaultValue method to get or set the region's default value. </p>
+<p><strong>Content - </strong>The content element is the entire contents of the template editable region including the Dreamweaver template markup.</p>
+<p><strong>DefaultValue - </strong>This is the default value for the editible region.</p>
+<p><strong>Start - </strong>The start element is the index of the first character of the Dreamweaver editible region HTML template markup.</p>
+<p><strong>End - </strong>The end element is the index of the last character of the Dreamweaver editible region HTML template markup.</p>
+<h4>setRegionDefaultValue(region, value)</h4>
+<p>The setRegionDefaultValue method is used to set a region's default value. The region argument is the name of the region to change. This can be obtained using the getRegionNames method. The value is the value to set as the default for the region.</p>
+<h4>getRegionDefaultValue(region) </h4>
+<p>The getRegionDefaultValue method can be used to get a region's value. The region argument is the name of the region to get the value of.</p>
+<h4>createInstance(rootRelativePath)</h4>
+<p>The createInstance method creates a new Instance object based upon the Template. The rootRelativePath argument indicates the path to the DWT file from your website's root directory.</p>
+<h4>setTemplate(template)</h4>
+<p>The setTemplate method is used to set the template html. The template argument is the contents of the DWT file. </p>
+<h4>getTemplate()</h4>
+<p>The getTemplate method returns the HTML of the Dreamweaver template.</p>
+<h3>Instance.cfc</h3>
+<p>The instance.cfc is used to read and work with a files based on Dreamweaver template files and provides these methods:</p>
+<h4>readInstanceFromFile(file)</h4>
+<p>The readInstanceFromFile method reads a document based on a Dreamweaver template from a file. The file argument specifies the path to the file to read.</p>
+<h4>writeInstanceToFile(file) </h4>
+<p>The writeInstanceToFile method is used to write the an instance back to disk.</p>
+<h4>getRegionNames() </h4>
+<p>The getRegionNames method returns an array of all the region names in the instance. This can be used in conjunciton with the setRegionValue method to set values for regions.</p>
+<h4>getRegions()</h4>
+<p>The getRegions method returns an array of structures describing all of the instance's regions. The each array element corrisponds to an editible region within the instance. Each array element is a structure containing the following items:</p>
+<p><strong>Name - </strong>The name element is the name of the editible region. This can be used with the get/setRegionValue method to get or set the region's value. </p>
+<p><strong>Content - </strong>The content element is the entire contents of the instance editable region including the Dreamweaver template markup.</p>
+<p><strong>Value - </strong>This is the default value of the editible region.</p>
+<p><strong>Start - </strong>The start element is the index of the first character of the Dreamweaver editible region HTML template markup.</p>
+<p><strong>End - </strong>The end element is the index of the last character of the Dreamweaver editible region HTML template markup.</p>
+<h4>setRegionValue(region, value)</h4>
+<p>The setRegionValue method is used to set a region's value. The region argument is the name of the region to change. This can be obtained using the getRegionNames method. The value is the value to set as the default for the region.</p>
+<h4>getRegionValue(region) </h4>
+<p>The getRegionValue method can be used to get a region's value. The region argument is the name of the region to get the value of.</p>
+<h4>setInstance(instance)</h4>
+<p>The setInstance method is used to set the instance's html. The template argument is the contents of the instance file. </p>
+<h4>getInstance()</h4>
+<p>The getInstance method returns the HTML of the template instance.</p>
+</body>
+</html>

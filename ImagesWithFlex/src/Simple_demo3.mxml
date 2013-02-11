@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" horizontalAlign="center" >
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Text;
+			import mx.rpc.events.ResultEvent;
+			import mx.core.UIComponent;
+			import com.adobe.images.JPGEncoder;
+			
+			[Bindable] private var imageSource:String = "";
+			
+			private function getBitmapData(target:UIComponent) : BitmapData{
+	            var bitmapData:BitmapData = new BitmapData(target.width, target.height);
+	            var matrix:Matrix = new Matrix();
+	            bitmapData.draw(target, matrix);
+	            return bitmapData;
+        	}
+        	
+        	private function createImage(target:UIComponent):ByteArray{
+        		var bitmapData:BitmapData = getBitmapData(target);
+	            var jpgEncoder:JPGEncoder = new JPGEncoder(90);
+	            return jpgEncoder.encode(bitmapData);
+        	}
+        
+	        private function sendImage(target:UIComponent):void{
+	            var imgData:ByteArray = createImage(target);
+	            imageService.saveImage(imgData);          
+	        }	
+	        
+	        private function imageSaveResult(event:ResultEvent):void{
+	        	imageSource = event.result as String;
+	        }
+
+        
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="imageService" showBusyCursor="true" destination="ColdFusion" source="com.DemoImageService">
+	    <mx:method name="saveImage" result="imageSaveResult(event)" />
+	</mx:RemoteObject>
+
+	<mx:HBox>
+		<mx:Canvas width="500" height="500">
+		<mx:RichTextEditor id="richtext" title="Simple Demo #3" left="5" right="5" top="5" bottom="35">
+		</mx:RichTextEditor>
+		<mx:Button label="Send Image" bottom="5" horizontalCenter="0" click="sendImage(textHolder)"/>
+	</mx:Canvas>
+    
+    <mx:Panel layout="vertical" id="panel2" title="Image Wil Appear Here" width="500" height="500" verticalAlign="middle" horizontalAlign="center"  backgroundColor="#000000">
+    	<mx:Image source="{imageSource}" visible="{imageSource.length &gt; 0}" />
+    </mx:Panel>
+	</mx:HBox>
+	<mx:VBox backgroundColor="#FFFFFF" id="textHolder">
+		<mx:Text htmlText="{richtext.htmlText}"/>
+	</mx:VBox>
+	
+</mx:Application>

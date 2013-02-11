@@ -1,0 +1,32 @@
+body{
+	text-align: left;
+	padding-top: 5px;
+	paddding-bottom: 5px;
+}
+body, p, table, tr, td, li{
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+.label{
+	font-weight: bold;
+	vertical-align: text-top;
+	background-color: #EEEEEE;
+	padding: 3px;
+	white-space: nowrap;
+}
+.bodyCell{
+	padding: 10px;
+}
+h1{
+	color: #000034;
+	font-size: 18px;
+	border-bottom: 1px solid #014CA7;
+}
+.error{
+	color: #FF0000;
+}
+.footer{
+	margin-top: 25px;
+	border-top: 1px solid black;
+	font-size: 10px;
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of Bitmap</title>
+	<nodes>
+		<node icon="classpathIcon" label="[source path] src" expanded="true">
+			<node icon="packageIcon" label="com.adobe.images" expanded="true">
+				<node icon="actionScriptIcon" label="JPGEncoder.as" url="source/[source path] src/com/adobe/images/JPGEncoder.as.html"/>
+			</node>
+		</node>
+		<node icon="mxmlAppIcon" selected="true" label="main.mxml" url="source/main.mxml.html"/>
+	</nodes>
+	<zipfile label="Download source (ZIP, 7K)" url="Bitmap.zip"/>
+	<sdklink label="Download Flex 2 SDK" url="http://www.adobe.com/go/flex2_sdk"/>
+</index>

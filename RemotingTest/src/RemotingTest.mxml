@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" creationComplete="init()">
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.ResultEvent;
+			import mx.controls.Alert;
+			
+			private function init():void{
+				test.test()
+			}
+			
+			private function testHandler(event:ResultEvent):void{
+				results.text = event.result as String;
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="test" destination="ColdFusion" source="com.test" >
+		<mx:method name="test" result="testHandler(event)" />
+	</mx:RemoteObject>
+	<mx:TextArea id="results"  width="476" height="271"/>
+</mx:Application>

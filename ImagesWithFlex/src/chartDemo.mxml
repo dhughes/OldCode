@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical">
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.ResultEvent;
+			import mx.core.UIComponent;
+			import com.adobe.images.JPGEncoder;
+			import mx.controls.Alert;
+			
+			[Bindable] private var imageSource:String = "";
+			
+			private function getBitmapData(target:UIComponent) : BitmapData
+        {
+            var bitmapData:BitmapData = new BitmapData(target.width, target.height);
+            var matrix:Matrix = new Matrix();
+            bitmapData.draw(target, matrix);
+            return bitmapData;
+        }
+        
+        private function sendImage(target:UIComponent):void{
+            var bitmapData:BitmapData = getBitmapData(target);
+            var jpgEncoder:JPGEncoder = new JPGEncoder(90);
+            var imgData:ByteArray = jpgEncoder.encode(bitmapData);
+            imageService.saveImageAndMailIt(imgData);            
+        }	
+        
+        private function imageSaveResult(event:ResultEvent):void{
+        	var success:Boolean = event.result as Boolean;
+        	
+        	if(success) Alert.show('The chart has been sent successfully')
+        	else Alert.show('There was an issue sending the chart');
+        }
+        
+        [Bindable]
+        public var SMITH:Array = [
+           {date:"22-Aug-05", close:45.87},
+           {date:"23-Aug-05", close:45.74},
+           {date:"24-Aug-05", close:45.77},
+           {date:"25-Aug-05", close:46.06},
+        ];
+        [Bindable]
+        public var DECKER:Array = [
+           {date:"22-Aug-05", close:45.59},
+           {date:"23-Aug-05", close:45.3},
+           {date:"24-Aug-05", close:46.71},
+           {date:"25-Aug-05", close:46.88},
+        ];
+        
+        
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="imageService" showBusyCursor="true" destination="ColdFusion" source="com.DemoImageService">
+	    <mx:method name="saveImageAndMailIt" result="imageSaveResult(event)" />
+	</mx:RemoteObject>
+	<mx:Panel title="Latest Sales Numbers" width="400" height="400" id="panel">
+     <mx:ColumnChart id="myChart"
+        dataProvider="{SMITH}"
+        showDataTips="true"
+        height="250"
+        width="350"
+     >
+        <mx:horizontalAxis>
+           <mx:CategoryAxis categoryField="date"/>
+        </mx:horizontalAxis>
+        <mx:verticalAxis>
+           <mx:LinearAxis minimum="40" maximum="50"/>
+        </mx:verticalAxis>
+        <mx:series>
+           <mx:ColumnSeries
+                dataProvider="{SMITH}"
+                xField="date"
+                yField="close"
+                displayName="SMITH"
+           >
+           </mx:ColumnSeries>
+           <mx:LineSeries
+                dataProvider="{DECKER}"
+                xField="date"
+                yField="close"
+                displayName="DECKER"
+           >
+           </mx:LineSeries>
+        </mx:series>
+     </mx:ColumnChart>
+     <mx:Legend dataProvider="{myChart}"/>
+  </mx:Panel>
+  <mx:Button label="Send Image" click="sendImage(panel)" />
+</mx:Application>

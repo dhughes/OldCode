@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="horizontal">
+	<mx:Script>
+		<![CDATA[
+			import mx.rpc.events.ResultEvent;
+			import mx.core.UIComponent;
+			import com.adobe.images.JPGEncoder;
+			
+			[Bindable] private var imageSource:String = "";
+			
+			private function getBitmapData(target:UIComponent) : BitmapData
+        {
+            var bitmapData:BitmapData = new BitmapData(target.width, target.height);
+            var matrix:Matrix = new Matrix();
+            bitmapData.draw(target, matrix);
+            return bitmapData;
+        }
+        
+        private function sendImage(target:UIComponent):void{
+            var bitmapData:BitmapData = getBitmapData(target);
+            var jpgEncoder:JPGEncoder = new JPGEncoder(90);
+            var imgData:ByteArray = jpgEncoder.encode(bitmapData);
+            imageService.saveImage(imgData);            
+        }	
+        
+        private function imageSaveResult(event:ResultEvent):void{
+        	imageSource = event.result as String;
+        }
+        
+        
+		]]>
+	</mx:Script>
+	<mx:RemoteObject id="imageService" showBusyCursor="true" destination="ColdFusion" source="com.DemoImageService">
+	    <mx:method name="saveImage" result="imageSaveResult(event)" />
+	</mx:RemoteObject>
+	
+	<mx:Panel layout="absolute" id="panel" title="Create an Image" width="400" height="400">
+        <mx:TextArea left="5" top="5" bottom="5" right="5"/>
+        <mx:ControlBar>
+        	<mx:VBox horizontalAlign="center">
+        		<mx:Text text="Enter some text in the text area above and click 'Send Image'" />
+    			<mx:Button label="Send Image" click="sendImage(panel)" />
+        	</mx:VBox>
+        	
+        </mx:ControlBar>
+    </mx:Panel>
+    
+    <mx:Panel layout="absolute" id="panel2" title="Image Will Appear Here" width="500" height="500" verticalAlign="middle" horizontalAlign="center" >
+    	<mx:Image source="{imageSource}" visible="{imageSource.length &gt; 0}" />
+    </mx:Panel>
+</mx:Application>
