@@ -1,0 +1,7 @@
+<cfinvoke
+	webservice="http://alagad.local/WebServices/fortune/fortune.cfc?wsdl"
+ 	method="getTopicsList"
+   	returnvariable="foo">
+</cfinvoke>
+
+<cfdump var="#foo#">
